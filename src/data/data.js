@@ -23,15 +23,15 @@ export const menu = [
       listItems: [
         {
           id: 1,
-          title: "Users",
-          url: "/users",
-          icon: "user.svg",
+          title: "Notes",
+          url: "/notes",
+          icon: "note.svg",
         },
         {
           id: 2,
-          title: "Products",
-          url: "/products",
-          icon: "product.svg",
+          title: "Questions",
+          url: "/questions",
+          icon: "question.svg",
         },
         {
           id: 3,

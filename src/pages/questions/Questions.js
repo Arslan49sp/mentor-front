@@ -1,12 +1,12 @@
-const User = () => {
+const Questions = () => {
 
     //Fetch data and send to Single Component
     
     return (
       <div className="user">
-       User
+        Questions
       </div>
     )
   }
   
-  export default User
+  export default Questions
