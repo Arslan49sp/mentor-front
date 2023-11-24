@@ -2,7 +2,7 @@ import { useState } from "react";
 import Dropdown from "../../components/dropdown/Dropdown";
 import "./questions.scss";
 import { useEffect } from "react";
-import { getClasses, getSubjects } from "../../data/api";
+import { getClasses, getSubjects, getChapters } from "../../data/api";
 
 const Questions = () => {
   //Fetch data and send to Single Component
@@ -12,6 +12,9 @@ const Questions = () => {
 
   const [subjects, setSubjects] = useState();
   const [selectedSubjId, setSelectedSubjId] = useState();
+
+  const [chapters, setChapters] = useState();
+  const [selectedChapterId, setSelectedChapterId] = useState();
 
   // Get all the classes
   useEffect(() => {
@@ -29,12 +32,25 @@ const Questions = () => {
     }
   }, [selectedClassId]);
 
+  // Get all the chapters
+  useEffect(() => {
+    if (selectedSubjId != "Subjects" && selectedSubjId) {
+      getChapters(selectedSubjId).then((result) => {
+        setChapters(result.data.data);
+      });
+    }
+  }, [selectedSubjId]);
+
   const handleClassChange = (e) => {
     setSelectedClassId(e.currentTarget.value);
   };
 
   const handleSubjectChange = (e) => {
     setSelectedSubjId(e.currentTarget.value);
+  };
+
+  const handleChapterChange = (e) => {
+    setSelectedChapterId(e.currentTarget.value);
   };
 
   return (
@@ -52,6 +68,12 @@ const Questions = () => {
           label="Subjects"
           options={subjects}
           onChange={handleSubjectChange}
+        />
+
+        <Dropdown
+          label="Chapters"
+          options={chapters}
+          onChange={handleChapterChange}
         />
       </div>
     </div>
