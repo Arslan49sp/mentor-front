@@ -1,12 +1,14 @@
-const Questions = () => {
+import Dropdown from "../../components/dropdown/Dropdown";
 
-    //Fetch data and send to Single Component
-    
-    return (
-      <div className="user">
-        Questions
-      </div>
-    )
-  }
-  
-  export default Questions
+const Questions = () => {
+  //Fetch data and send to Single Component
+
+  return (
+    <div className="user">
+      Questions
+      <Dropdown label="Country" options={[{ value: "Pakistan" }]} />
+    </div>
+  );
+};
+
+export default Questions;
