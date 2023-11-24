@@ -8,4 +8,9 @@ const getClasses = async () => {
   return await axios.get(url);
 };
 
-export { getClasses };
+const getSubjects = async (classId) => {
+  const url = `/academic-subjects?classId=${classId}`;
+  return await axios.get(url);
+};
+
+export { getClasses, getSubjects };
