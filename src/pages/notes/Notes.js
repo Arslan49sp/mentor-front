@@ -1,5 +1,5 @@
 import DataTable from "../../components/dataTable/DataTable";
-import "./users.scss";
+import "./notes.scss";
 import Add from "../../components/add/Add";
 import { useState } from "react";
 import { userRows } from "../../data/data";
@@ -53,7 +53,7 @@ const columns = [
   },
 ];
 
-const Users = () => {
+const Notes = () => {
   const [open, setOpen] = useState(false);
 
   // TEST THE API
@@ -69,7 +69,7 @@ const Users = () => {
   return (
     <div className="users">
       <div className="info">
-        <h1>Users</h1>
+        <h1>Notes</h1>
         <button onClick={() => setOpen(true)}>Add New User</button>
       </div>
       <DataTable slug="users" columns={columns} rows={userRows} />
@@ -86,4 +86,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Notes;

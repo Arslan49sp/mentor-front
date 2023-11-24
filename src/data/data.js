@@ -23,26 +23,26 @@ export const menu = [
       listItems: [
         {
           id: 1,
-          title: "Users",
-          url: "/users",
-          icon: "user.svg",
+          title: "Notes",
+          url: "/notes",
+          icon: "note.svg",
         },
         {
           id: 2,
-          title: "Products",
-          url: "/products",
-          icon: "product.svg",
+          title: "Questions",
+          url: "/questions",
+          icon: "question.svg",
         },
         {
           id: 3,
-          title: "Orders",
-          url: "/orders",
+          title: "Tests",
+          url: "/tests",
           icon: "order.svg",
         },
         {
           id: 4,
-          title: "Posts",
-          url: "/posts",
+          title: "Result",
+          url: "/result",
           icon: "post2.svg",
         },
       ],
@@ -53,15 +53,9 @@ export const menu = [
       listItems: [
         {
           id: 1,
-          title: "Elements",
+          title: "Notices",
           url: "/",
-          icon: "element.svg",
-        },
-        {
-          id: 2,
-          title: "Notes",
-          url: "/",
-          icon: "note.svg",
+          icon: "notifications.svg",
         },
         {
           id: 3,
@@ -95,24 +89,7 @@ export const menu = [
         },
       ],
     },
-    {
-      id: 5,
-      title: "analytics",
-      listItems: [
-        {
-          id: 1,
-          title: "Charts",
-          url: "/",
-          icon: "chart.svg",
-        },
-        {
-          id: 2,
-          title: "Logs",
-          url: "/",
-          icon: "log.svg",
-        },
-      ],
-    },
+   
   ];
   
   export const topDealUsers = [
