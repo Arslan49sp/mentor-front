@@ -11,7 +11,11 @@ const Dropdown = (props) => {
           if (typeof option === "string") {
             return <option key={option}>{option} </option>;
           } else {
-            return <option key={option}> {option.name} </option>;
+            return (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            );
           }
         })}
       </select>

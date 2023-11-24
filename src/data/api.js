@@ -1,20 +1,11 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://countriesnow.space/api/v0.1/countries";
+// axios.defaults.baseURL = "https://countriesnow.space/api/v0.1/countries";
+axios.defaults.baseURL = "http://15.207.247.8/api";
 
-const getCountries = async () => {
-  const url = "/positions";
+const getClasses = async () => {
+  const url = "/academic-classes";
   return await axios.get(url);
 };
 
-const getState = async (country) => {
-  const url = `/states/q?country=${country}`;
-  return await axios.get(url);
-};
-
-const getCities = async (country, state) => {
-  const url = `/state/cities/q?country=${country}&state=${state}`;
-  return await axios.get(url);
-};
-
-export { getCountries, getState, getCities };
+export { getClasses };
