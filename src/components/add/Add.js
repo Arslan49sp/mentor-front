@@ -1,6 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid";
 import "./add.scss";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // type Props = {
 //   slug: string;
@@ -9,47 +10,55 @@ import "./add.scss";
 // };
 
 const Add = (props) => {
+  const [formData, setFormData] = useState({});
+
+  const handleInputChange = (event, field) => {
+    setFormData({
+      ...formData,
+      [field]: event.target.value,
+    });
+  };
 
   // TEST THE API
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  // const mutation = useMutation({
-  //   mutationFn: () => {
-  //     return fetch(`http://localhost:8800/api/${props.slug}s`, {
-  //       method: "post",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         id: 111,
-  //         img: "",
-  //         lastName: "Hello",
-  //         firstName: "Test",
-  //         email: "testme@gmail.com",
-  //         phone: "123 456 789",
-  //         createdAt: "01.02.2023",
-  //         verified: true,
-  //       }),
-  //     });
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries([`all${props.slug}s`]);
-  //   },
-  // });
+  const mutation = useMutation({
+    mutationFn: () => {
+      return fetch(`http://15.207.247.8/api//academic-classes`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+    },
+    onSuccess: () => {
+      props.setAddedItem("class added");
+      queryClient.invalidateQueries([`all${props.slug}s`]);
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     //add new item
-    // mutation.mutate();
-    props.setOpen(false)
+    mutation.mutate();
+    console.log("Form Data:", formData);
+    props.setAddType("");
+    props.setOpen(false);
   };
   return (
     <div className="add">
       <div className="modal">
-        <span className="close" onClick={() => props.setOpen(false)}>
+        <span
+          className="close"
+          onClick={() => {
+            props.setOpen(false);
+            props.setAddType("");
+          }}
+        >
           X
         </span>
         <h1>Add new {props.slug}</h1>
@@ -59,7 +68,12 @@ const Add = (props) => {
             .map((column) => (
               <div className="item">
                 <label>{column.headerName}</label>
-                <input type={column.type} placeholder={column.field} />
+                <input
+                  required
+                  type={column.type}
+                  placeholder={column.field}
+                  onChange={(event) => handleInputChange(event, column.field)}
+                />
               </div>
             ))}
           <button>Send</button>

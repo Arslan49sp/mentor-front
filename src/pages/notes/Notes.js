@@ -3,7 +3,7 @@ import "./notes.scss";
 import Add from "../../components/add/Add";
 import { useState } from "react";
 import { userRows } from "../../data/data";
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -74,7 +74,7 @@ const Notes = () => {
       </div>
       <DataTable slug="users" columns={columns} rows={userRows} />
 
-       {/* TEST THE API */}
+      {/* TEST THE API */}
 
       {/* {isLoading ? (
         "Loading..."

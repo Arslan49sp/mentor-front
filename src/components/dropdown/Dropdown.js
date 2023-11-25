@@ -1,7 +1,7 @@
 import "./dropdown.scss";
 
 const Dropdown = (props) => {
-  const { label, options, value, onChange } = props;
+  const { label, options, value, onChange, onClick } = props;
   return (
     <div className="drop-container">
       <label> {label} </label>
@@ -18,7 +18,9 @@ const Dropdown = (props) => {
             );
           }
         })}
-        <option value="0">Add new</option>
+        <option value="0" onClick={onClick}>
+          Add new
+        </option>
       </select>
     </div>
   );

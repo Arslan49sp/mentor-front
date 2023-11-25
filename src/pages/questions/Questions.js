@@ -9,10 +9,14 @@ import {
   getQuestions,
 } from "../../data/api";
 import DataTable from "../../components/dataTable/DataTable";
-import { mcqsColumns } from "../../data/data";
+import { mcqsColumns, classColumns } from "../../data/data";
+import Add from "../../components/add/Add";
 
 const Questions = () => {
   //Fetch data and send to Single Component
+  const [open, setOpen] = useState(false);
+  const [addType, setAddType] = useState("");
+  const [addedItem, setAddedItem] = useState("");
 
   const [classes, setClasses] = useState();
   const [selectedClassId, setSelectedClassId] = useState();
@@ -31,7 +35,7 @@ const Questions = () => {
     getClasses().then((result) => {
       setClasses(result.data.data);
     });
-  }, []);
+  }, [addedItem]);
 
   // Get all the subjects
   useEffect(() => {
@@ -69,7 +73,7 @@ const Questions = () => {
   const handleClassChange = (e) => {
     let id = e.currentTarget.value;
     if (id == 0) {
-      console.log("ready to add ." + id);
+      setAddType("class");
     } else setSelectedClassId(id);
   };
 
@@ -90,6 +94,7 @@ const Questions = () => {
           label="Classes"
           options={classes}
           onChange={handleClassChange}
+          onClick={() => setOpen(true)}
         />
 
         <Dropdown
@@ -108,6 +113,16 @@ const Questions = () => {
         <></>
       ) : (
         <DataTable slug="questions" columns={mcqsColumns} rows={questions} />
+      )}
+
+      {addType === "class" && (
+        <Add
+          slug="Chapter"
+          columns={classColumns}
+          setOpen={setOpen}
+          setAddType={setAddType}
+          setAddedItem={setAddedItem}
+        />
       )}
     </div>
   );

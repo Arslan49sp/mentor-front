@@ -1,4 +1,13 @@
 //defining all the columns for MCQS table.
+
+export const classColumns = [
+  {
+    field: "name",
+    type: "string",
+    headerName: "Name",
+    width: 450,
+  },
+];
 export const mcqsColumns = [
   { field: "id", headerName: "ID", width: 90 },
   {
