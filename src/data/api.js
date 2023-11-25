@@ -18,4 +18,9 @@ const getChapters = async (subjId) => {
   return await axios.get(url);
 };
 
-export { getClasses, getSubjects, getChapters };
+const getQuestions = async (id) => {
+  const url = `/questions?subjectId=${id}`;
+  return await axios.get(url);
+};
+
+export { getClasses, getSubjects, getChapters, getQuestions };

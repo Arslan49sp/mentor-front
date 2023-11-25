@@ -6,7 +6,7 @@ const Dropdown = (props) => {
     <div className="drop-container">
       <label> {label} </label>
       <select value={value} onChange={onChange}>
-        <option>{label}</option>
+        <option>--</option>
         {options?.map((option) => {
           if (typeof option === "string") {
             return <option key={option}>{option} </option>;
@@ -18,6 +18,7 @@ const Dropdown = (props) => {
             );
           }
         })}
+        <option value="0">Add new</option>
       </select>
     </div>
   );

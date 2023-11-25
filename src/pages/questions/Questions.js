@@ -2,7 +2,14 @@ import { useState } from "react";
 import Dropdown from "../../components/dropdown/Dropdown";
 import "./questions.scss";
 import { useEffect } from "react";
-import { getClasses, getSubjects, getChapters } from "../../data/api";
+import {
+  getClasses,
+  getSubjects,
+  getChapters,
+  getQuestions,
+} from "../../data/api";
+import DataTable from "../../components/dataTable/DataTable";
+import { mcqsColumns } from "../../data/data";
 
 const Questions = () => {
   //Fetch data and send to Single Component
@@ -16,8 +23,11 @@ const Questions = () => {
   const [chapters, setChapters] = useState();
   const [selectedChapterId, setSelectedChapterId] = useState();
 
+  const [questions, setQuestions] = useState([]);
+
   // Get all the classes
   useEffect(() => {
+    setQuestions([]);
     getClasses().then((result) => {
       setClasses(result.data.data);
     });
@@ -25,6 +35,10 @@ const Questions = () => {
 
   // Get all the subjects
   useEffect(() => {
+    setQuestions([]);
+    setChapters([]);
+    setSubjects([]);
+
     if (selectedClassId != "Classes" && selectedClassId) {
       getSubjects(selectedClassId).then((result) => {
         setSubjects(result.data.data);
@@ -34,15 +48,29 @@ const Questions = () => {
 
   // Get all the chapters
   useEffect(() => {
-    if (selectedSubjId != "Subjects" && selectedSubjId) {
+    setQuestions([]);
+    setChapters([]);
+    if (selectedSubjId !== "Subjects" && selectedSubjId) {
       getChapters(selectedSubjId).then((result) => {
         setChapters(result.data.data);
       });
     }
   }, [selectedSubjId]);
 
+  // Get all the Questions
+  useEffect(() => {
+    if (selectedSubjId !== "Subjects" && selectedSubjId) {
+      getQuestions(selectedSubjId).then((result) => {
+        setQuestions(result.data.data);
+      });
+    }
+  }, [selectedSubjId]);
+
   const handleClassChange = (e) => {
-    setSelectedClassId(e.currentTarget.value);
+    let id = e.currentTarget.value;
+    if (id == 0) {
+      console.log("ready to add ." + id);
+    } else setSelectedClassId(id);
   };
 
   const handleSubjectChange = (e) => {
@@ -76,6 +104,11 @@ const Questions = () => {
           onChange={handleChapterChange}
         />
       </div>
+      {questions.length === 0 ? (
+        <></>
+      ) : (
+        <DataTable slug="questions" columns={mcqsColumns} rows={questions} />
+      )}
     </div>
   );
 };
