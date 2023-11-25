@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// axios.defaults.baseURL = "https://countriesnow.space/api/v0.1/countries";
 axios.defaults.baseURL = "http://15.207.247.8/api";
 
 const getClasses = async () => {

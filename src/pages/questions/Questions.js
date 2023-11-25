@@ -14,6 +14,7 @@ import {
   classColumns,
   baseURL,
   subjectColumns,
+  storeChapterCol,
 } from "../../data/data";
 import Add from "../../components/add/Add";
 
@@ -32,6 +33,7 @@ const Questions = () => {
 
   const [chapters, setChapters] = useState();
   const [selectedChapterId, setSelectedChapterId] = useState();
+  const [addChapterData, setAddChapterData] = useState();
 
   const [questions, setQuestions] = useState([]);
 
@@ -54,7 +56,7 @@ const Questions = () => {
         setSubjects(result.data.data);
       });
     }
-  }, [selectedClassId]);
+  }, [selectedClassId, addedItem]);
 
   // Get all the chapters
   useEffect(() => {
@@ -65,7 +67,7 @@ const Questions = () => {
         setChapters(result.data.data);
       });
     }
-  }, [selectedSubjId]);
+  }, [selectedSubjId, addedItem]);
 
   // Get all the Questions
   useEffect(() => {
@@ -94,7 +96,13 @@ const Questions = () => {
   };
 
   const handleChapterChange = (e) => {
-    setSelectedChapterId(e.currentTarget.value);
+    let id = e.currentTarget.value;
+    if (id == 0 && selectedSubjId !== 0 && selectedSubjId) {
+      setAddChapterData({
+        academic_subject_id: selectedSubjId,
+      });
+      setAddType("chapter");
+    } else setSelectedChapterId(id);
   };
 
   return (
@@ -148,6 +156,17 @@ const Questions = () => {
           setAddedItem={setAddedItem}
           url={baseURL + "/academic-subjects"}
           data={addSubjData}
+        />
+      )}
+      {addType === "chapter" && (
+        <Add
+          slug="Chapter"
+          columns={storeChapterCol}
+          setOpen={setOpen}
+          setAddType={setAddType}
+          setAddedItem={setAddedItem}
+          url={baseURL + "/chapters"}
+          data={addChapterData}
         />
       )}
     </div>

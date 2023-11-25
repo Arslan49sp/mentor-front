@@ -19,7 +19,27 @@ export const subjectColumns = [
   {
     field: "academic_class_id",
     type: "string",
+    headerName: "Class Id",
+    width: 100,
+  },
+];
+export const storeChapterCol = [
+  {
+    field: "name",
+    type: "string",
     headerName: "Name",
+    width: 100,
+  },
+  {
+    field: "academic_subject_id",
+    type: "string",
+    headerName: "Subject Id",
+    width: 100,
+  },
+  {
+    field: "chapter_number",
+    type: "number",
+    headerName: "Chapter Number",
     width: 100,
   },
 ];
@@ -54,6 +74,12 @@ export const mcqsColumns = [
     field: "option_d",
     type: "string",
     headerName: "D",
+    width: 100,
+  },
+  {
+    field: "correct_answer",
+    type: "string",
+    headerName: "Correct",
     width: 100,
   },
 ];
