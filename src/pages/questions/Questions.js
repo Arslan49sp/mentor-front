@@ -132,43 +132,54 @@ const Questions = () => {
       {questions.length === 0 ? (
         <></>
       ) : (
-        <DataTable slug="questions" columns={mcqsColumns} rows={questions} />
+        <>
+          <div className="info">
+            <h2>MCQS</h2>
+            <button onClick={() => setOpen(true)}>Add New</button>
+          </div>
+          <DataTable slug="questions" columns={mcqsColumns} rows={questions} />
+        </>
       )}
 
-      {addType === "class" && (
-        <Add
-          slug="Class"
-          columns={classColumns}
-          setOpen={setOpen}
-          setAddType={setAddType}
-          setAddedItem={setAddedItem}
-          url={baseURL + "/academic-classes"}
-          data={{}}
-        />
-      )}
+      <>
+        {open && (
+          <Add slug="Question" columns={mcqsColumns} setOpen={setOpen} />
+        )}
+        {addType === "class" && (
+          <Add
+            slug="Class"
+            columns={classColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/academic-classes"}
+            data={{}}
+          />
+        )}
 
-      {addType === "subject" && (
-        <Add
-          slug="Subject"
-          columns={subjectColumns}
-          setOpen={setOpen}
-          setAddType={setAddType}
-          setAddedItem={setAddedItem}
-          url={baseURL + "/academic-subjects"}
-          data={addSubjData}
-        />
-      )}
-      {addType === "chapter" && (
-        <Add
-          slug="Chapter"
-          columns={storeChapterCol}
-          setOpen={setOpen}
-          setAddType={setAddType}
-          setAddedItem={setAddedItem}
-          url={baseURL + "/chapters"}
-          data={addChapterData}
-        />
-      )}
+        {addType === "subject" && (
+          <Add
+            slug="Subject"
+            columns={subjectColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/academic-subjects"}
+            data={addSubjData}
+          />
+        )}
+        {addType === "chapter" && (
+          <Add
+            slug="Chapter"
+            columns={storeChapterCol}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/chapters"}
+            data={addChapterData}
+          />
+        )}
+      </>
     </div>
   );
 };

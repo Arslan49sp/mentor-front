@@ -50,7 +50,7 @@ const Add = (props) => {
     //add new item
     mutation.mutate();
     console.log("Form Data:", formData);
-    setAddType("");
+    typeof setAddType === "function" && setAddType("");
     setOpen(false);
   };
   return (
@@ -60,7 +60,7 @@ const Add = (props) => {
           className="close"
           onClick={() => {
             setOpen(false);
-            setAddType("");
+            typeof setAddType === "function" && setAddType("");
           }}
         >
           X
