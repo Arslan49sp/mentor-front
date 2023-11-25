@@ -1,13 +1,29 @@
 //defining all the columns for MCQS table.
-
+export const baseURL = "http://15.207.247.8/api";
 export const classColumns = [
   {
     field: "name",
     type: "string",
     headerName: "Name",
-    width: 450,
+    width: 100,
   },
 ];
+
+export const subjectColumns = [
+  {
+    field: "name",
+    type: "string",
+    headerName: "Name",
+    width: 100,
+  },
+  {
+    field: "academic_class_id",
+    type: "string",
+    headerName: "Name",
+    width: 100,
+  },
+];
+
 export const mcqsColumns = [
   { field: "id", headerName: "ID", width: 90 },
   {

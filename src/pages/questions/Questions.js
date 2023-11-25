@@ -9,7 +9,12 @@ import {
   getQuestions,
 } from "../../data/api";
 import DataTable from "../../components/dataTable/DataTable";
-import { mcqsColumns, classColumns } from "../../data/data";
+import {
+  mcqsColumns,
+  classColumns,
+  baseURL,
+  subjectColumns,
+} from "../../data/data";
 import Add from "../../components/add/Add";
 
 const Questions = () => {
@@ -23,6 +28,7 @@ const Questions = () => {
 
   const [subjects, setSubjects] = useState();
   const [selectedSubjId, setSelectedSubjId] = useState();
+  const [addSubjData, setAddSubjData] = useState({});
 
   const [chapters, setChapters] = useState();
   const [selectedChapterId, setSelectedChapterId] = useState();
@@ -78,7 +84,13 @@ const Questions = () => {
   };
 
   const handleSubjectChange = (e) => {
-    setSelectedSubjId(e.currentTarget.value);
+    let id = e.currentTarget.value;
+    if (id == 0 && selectedClassId !== 0 && selectedClassId) {
+      setAddSubjData({
+        academic_class_id: selectedClassId,
+      });
+      setAddType("subject");
+    } else setSelectedSubjId(id);
   };
 
   const handleChapterChange = (e) => {
@@ -117,11 +129,25 @@ const Questions = () => {
 
       {addType === "class" && (
         <Add
-          slug="Chapter"
+          slug="Class"
           columns={classColumns}
           setOpen={setOpen}
           setAddType={setAddType}
           setAddedItem={setAddedItem}
+          url={baseURL + "/academic-classes"}
+          data={{}}
+        />
+      )}
+
+      {addType === "subject" && (
+        <Add
+          slug="Subject"
+          columns={subjectColumns}
+          setOpen={setOpen}
+          setAddType={setAddType}
+          setAddedItem={setAddedItem}
+          url={baseURL + "/academic-subjects"}
+          data={addSubjData}
         />
       )}
     </div>

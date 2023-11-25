@@ -1,17 +1,19 @@
 import { GridColDef } from "@mui/x-data-grid";
 import "./add.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-// type Props = {
-//   slug: string;
-//   columns: GridColDef[];
-//   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-// };
 
 const Add = (props) => {
   const [formData, setFormData] = useState({});
+  const { slug, url, columns, setOpen, setAddType, setAddedItem, data } = props;
 
+  useEffect(() => {
+    // Merge incomingData with the current state using spread operator
+    setFormData((prevData) => ({
+      ...prevData,
+      ...data,
+    }));
+  }, [data]);
   const handleInputChange = (event, field) => {
     setFormData({
       ...formData,
@@ -25,7 +27,7 @@ const Add = (props) => {
 
   const mutation = useMutation({
     mutationFn: () => {
-      return fetch(`http://15.207.247.8/api//academic-classes`, {
+      return fetch(url, {
         method: "post",
         headers: {
           Accept: "application/json",
@@ -35,19 +37,21 @@ const Add = (props) => {
       });
     },
     onSuccess: () => {
-      props.setAddedItem("class added");
-      queryClient.invalidateQueries([`all${props.slug}s`]);
+      setAddedItem(`${slug} added`);
+      queryClient.invalidateQueries([`all${slug}s`]);
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(url);
+    console.log(data);
 
     //add new item
     mutation.mutate();
     console.log("Form Data:", formData);
-    props.setAddType("");
-    props.setOpen(false);
+    setAddType("");
+    setOpen(false);
   };
   return (
     <div className="add">
@@ -55,16 +59,18 @@ const Add = (props) => {
         <span
           className="close"
           onClick={() => {
-            props.setOpen(false);
-            props.setAddType("");
+            setOpen(false);
+            setAddType("");
           }}
         >
           X
         </span>
-        <h1>Add new {props.slug}</h1>
+        <h1>Add new {slug}</h1>
         <form onSubmit={handleSubmit}>
-          {props.columns
-            .filter((item) => item.field !== "id" && item.field !== "img")
+          {columns
+            .filter(
+              (item) => !item.field.endsWith("id") && item.field !== "img"
+            )
             .map((column) => (
               <div className="item">
                 <label>{column.headerName}</label>
