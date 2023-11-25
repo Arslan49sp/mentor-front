@@ -1,65 +1,85 @@
 import { GridColDef } from "@mui/x-data-grid";
 import "./add.scss";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-// type Props = {
-//   slug: string;
-//   columns: GridColDef[];
-//   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-// };
+import { useState, useEffect } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Add = (props) => {
+  const [formData, setFormData] = useState({});
+  const { slug, url, columns, setOpen, setAddType, setAddedItem, data } = props;
+
+  useEffect(() => {
+    // Merge incomingData with the current state using spread operator
+    setFormData((prevData) => ({
+      ...prevData,
+      ...data,
+    }));
+  }, [data]);
+  const handleInputChange = (event, field) => {
+    setFormData({
+      ...formData,
+      [field]: event.target.value,
+    });
+  };
 
   // TEST THE API
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  // const mutation = useMutation({
-  //   mutationFn: () => {
-  //     return fetch(`http://localhost:8800/api/${props.slug}s`, {
-  //       method: "post",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         id: 111,
-  //         img: "",
-  //         lastName: "Hello",
-  //         firstName: "Test",
-  //         email: "testme@gmail.com",
-  //         phone: "123 456 789",
-  //         createdAt: "01.02.2023",
-  //         verified: true,
-  //       }),
-  //     });
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries([`all${props.slug}s`]);
-  //   },
-  // });
+  const mutation = useMutation({
+    mutationFn: () => {
+      return fetch(url, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+    },
+    onSuccess: () => {
+      setAddedItem(`${slug} added`);
+      queryClient.invalidateQueries([`all${slug}s`]);
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(url);
+    console.log(data);
 
     //add new item
-    // mutation.mutate();
-    props.setOpen(false)
+    mutation.mutate();
+    console.log("Form Data:", formData);
+    setAddType("");
+    setOpen(false);
   };
   return (
     <div className="add">
       <div className="modal">
-        <span className="close" onClick={() => props.setOpen(false)}>
+        <span
+          className="close"
+          onClick={() => {
+            setOpen(false);
+            setAddType("");
+          }}
+        >
           X
         </span>
-        <h1>Add new {props.slug}</h1>
+        <h1>Add new {slug}</h1>
         <form onSubmit={handleSubmit}>
-          {props.columns
-            .filter((item) => item.field !== "id" && item.field !== "img")
+          {columns
+            .filter(
+              (item) => !item.field.endsWith("id") && item.field !== "img"
+            )
             .map((column) => (
               <div className="item">
                 <label>{column.headerName}</label>
-                <input type={column.type} placeholder={column.field} />
+                <input
+                  required
+                  type={column.type}
+                  placeholder={column.field}
+                  onChange={(event) => handleInputChange(event, column.field)}
+                />
               </div>
             ))}
           <button>Send</button>
