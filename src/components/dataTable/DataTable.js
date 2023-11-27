@@ -36,7 +36,7 @@ const DataTable = (props) => {
   };
 
   const handleView = (number) => {
-    setREquestedQuestion(props.rows[number - 1]);
+    setREquestedQuestion(props.rows.find((obj) => obj.id == number));
     setOpen(true);
   };
 

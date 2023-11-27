@@ -17,6 +17,8 @@ import {
   storeChapterCol,
 } from "../../data/data";
 import Add from "../../components/add/Add";
+import { useQuery } from "@tanstack/react-query";
+import { stepClasses } from "@mui/material";
 
 const Questions = () => {
   //Fetch data and send to Single Component
@@ -36,6 +38,7 @@ const Questions = () => {
   const [addChapterData, setAddChapterData] = useState();
 
   const [questions, setQuestions] = useState([]);
+  const [chapterQuestions, setChapterQuestions] = useState({});
 
   const [addMcqsData, setAddMcqsData] = useState({});
 
@@ -50,6 +53,7 @@ const Questions = () => {
 
   // Get all the subjects
   useEffect(() => {
+    setChapterQuestions([]);
     setQuestions([]);
     setChapters([]);
     setSubjects([]);
@@ -64,6 +68,7 @@ const Questions = () => {
 
   // Get all the chapters
   useEffect(() => {
+    setChapterQuestions([]);
     setAddedItem("");
     setQuestions([]);
     setChapters([]);
@@ -108,7 +113,12 @@ const Questions = () => {
         academic_subject_id: selectedSubjId,
       });
       setAddType("chapter");
-    } else setSelectedChapterId(id);
+    } else {
+      setSelectedChapterId(id);
+      setChapterQuestions(
+        questions.filter((question) => question.chapter_id == id)
+      );
+    }
   };
 
   return (
@@ -138,9 +148,7 @@ const Questions = () => {
           onChange={handleChapterChange}
         />
       </div>
-      {questions.length === 0 ? (
-        <></>
-      ) : (
+      {selectedChapterId ? (
         <>
           <div className="info">
             <h2>MCQS</h2>
@@ -161,7 +169,15 @@ const Questions = () => {
               Add New
             </button>
           </div>
-          <DataTable slug="questions" columns={mcqsColumns} rows={questions} />
+          <DataTable
+            slug="questions"
+            columns={mcqsColumns}
+            rows={chapterQuestions}
+          />
+        </>
+      ) : (
+        <>
+          <p>Please choose class subject and then chapter</p>
         </>
       )}
 
