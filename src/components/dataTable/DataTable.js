@@ -1,6 +1,8 @@
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import "./dataTable.scss";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import ViewMcqs from "../questionDetails/mcqs/ViewMcqs";
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // type Props = {
@@ -24,10 +26,18 @@ const DataTable = (props) => {
   // //   }
   // // });
 
+  const [open, setOpen] = useState(false);
+  const [requestedQuestion, setREquestedQuestion] = useState({});
+
   const handleDelete = (number) => {
     //delete the item
     // mutation.mutate(id)
     console.log(number);
+  };
+
+  const handleView = (number) => {
+    console.log(props.rows[number]);
+    setOpen(true);
   };
 
   const actionColumn = {
@@ -40,6 +50,9 @@ const DataTable = (props) => {
           <Link to={`/${props.slug}/${params.row.id}`}>
             <img src="/view.svg" alt="" />
           </Link>
+          <div className="delete" onClick={() => handleView(params.row.id)}>
+            <img src="/eye.svg" alt="" />
+          </div>
           <div className="delete" onClick={() => handleDelete(params.row.id)}>
             <img src="/delete.svg" alt="" />
           </div>
@@ -75,6 +88,9 @@ const DataTable = (props) => {
         disableDensitySelector
         disableColumnSelector
       />
+      {open && (
+        <ViewMcqs slug="Mcqs" columns={requestedQuestion} setOpen={setOpen} />
+      )}
     </div>
   );
 };
