@@ -41,6 +41,7 @@ const Questions = () => {
 
   // Get all the classes
   useEffect(() => {
+    setAddedItem("");
     setQuestions([]);
     getClasses().then((result) => {
       setClasses(result.data.data);
@@ -52,6 +53,7 @@ const Questions = () => {
     setQuestions([]);
     setChapters([]);
     setSubjects([]);
+    setAddedItem("");
 
     if (selectedClassId != "Classes" && selectedClassId) {
       getSubjects(selectedClassId).then((result) => {
@@ -62,6 +64,7 @@ const Questions = () => {
 
   // Get all the chapters
   useEffect(() => {
+    setAddedItem("");
     setQuestions([]);
     setChapters([]);
     if (selectedSubjId !== "Subjects" && selectedSubjId) {
@@ -73,12 +76,13 @@ const Questions = () => {
 
   // Get all the Questions
   useEffect(() => {
+    setAddedItem("");
     if (selectedSubjId !== "Subjects" && selectedSubjId) {
       getQuestions(selectedSubjId).then((result) => {
         setQuestions(result.data.data);
       });
     }
-  }, [selectedSubjId]);
+  }, [selectedSubjId, addedItem]);
 
   const handleClassChange = (e) => {
     let id = e.currentTarget.value;
@@ -114,6 +118,7 @@ const Questions = () => {
       <div className="top-bar">
         <Dropdown
           label="Classes"
+          value={selectedClassId}
           options={classes}
           onChange={handleClassChange}
           onClick={() => setOpen(true)}
@@ -121,12 +126,14 @@ const Questions = () => {
 
         <Dropdown
           label="Subjects"
+          value={selectedSubjId}
           options={subjects}
           onChange={handleSubjectChange}
         />
 
         <Dropdown
           label="Chapters"
+          value={selectedChapterId}
           options={chapters}
           onChange={handleChapterChange}
         />
@@ -141,7 +148,11 @@ const Questions = () => {
               onClick={() => {
                 if (selectedChapterId && setSelectedChapterId !== 0) {
                   {
-                    let v;
+                    setAddMcqsData({
+                      chapter_id: selectedChapterId,
+                      type: "multiple_choice",
+                    });
+                    setAddType("question");
                     setOpen(true);
                   }
                 } else alert("Please choose a chapter first...");
@@ -156,7 +167,15 @@ const Questions = () => {
 
       <>
         {open && (
-          <Add slug="Question" columns={mcqsColumns} setOpen={setOpen} />
+          <Add
+            slug="question"
+            columns={mcqsColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/questions"}
+            data={addMcqsData}
+          />
         )}
         {addType === "class" && (
           <Add

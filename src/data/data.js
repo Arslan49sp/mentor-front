@@ -2,6 +2,7 @@
 export const baseURL = "http://13.232.222.199/api";
 export const classColumns = [
   {
+    required: "required",
     field: "name",
     type: "string",
     headerName: "Name",
@@ -11,6 +12,7 @@ export const classColumns = [
 
 export const subjectColumns = [
   {
+    required: "required",
     field: "name",
     type: "string",
     headerName: "Name",
@@ -25,18 +27,21 @@ export const subjectColumns = [
 ];
 export const storeChapterCol = [
   {
+    required: "required",
     field: "name",
     type: "string",
     headerName: "Name",
     width: 100,
   },
   {
+    required: "required",
     field: "academic_subject_id",
     type: "string",
     headerName: "Subject Id",
     width: 100,
   },
   {
+    required: "required",
     field: "chapter_number",
     type: "number",
     headerName: "Chapter Number",
@@ -45,42 +50,55 @@ export const storeChapterCol = [
 ];
 
 export const mcqsColumns = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "ID", width: 50 },
   {
+    required: "required",
     field: "stem",
     type: "string",
     headerName: "Question Statement",
     width: 450,
   },
   {
+    required: "required",
     field: "option_a",
     type: "string",
     headerName: "A",
     width: 100,
   },
   {
+    required: "required",
     field: "option_b",
     type: "string",
     headerName: "B",
     width: 100,
   },
   {
+    required: "required",
     field: "option_c",
     type: "string",
     headerName: "C",
     width: 100,
   },
   {
+    required: "required",
     field: "option_d",
     type: "string",
     headerName: "D",
     width: 100,
   },
   {
+    required: "required",
     field: "correct_answer",
     type: "string",
     headerName: "Correct",
     width: 100,
+  },
+  {
+    field: "explanation",
+    required: "",
+    type: "string",
+    headerName: "Explaination",
+    width: 250,
   },
 ];
 

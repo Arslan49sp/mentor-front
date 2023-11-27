@@ -75,14 +75,14 @@ const Add = (props) => {
               <div className="item">
                 <label>{column.headerName}</label>
                 <input
-                  required
+                  required={column.required}
                   type={column.type}
                   placeholder={column.field}
                   onChange={(event) => handleInputChange(event, column.field)}
                 />
               </div>
             ))}
-          <button>Send</button>
+          <button>Add</button>
         </form>
       </div>
     </div>
