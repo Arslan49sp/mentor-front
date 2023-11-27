@@ -181,6 +181,7 @@ const Questions = () => {
             slug="questions"
             columns={mcqsColumns}
             rows={chapterQuestions}
+            setAddedItem={setAddedItem}
           />
         </>
       ) : (

@@ -105,6 +105,9 @@ const DataTable = (props) => {
           slug="question"
           columns={props.columns}
           setOpen={setUpdateOpen}
+          setAddedItem={
+            typeof props.setAddedItem === "function" && props.setAddedItem
+          }
           url={baseURL + `/questions/${requestedQuestion.id}`}
           data={requestedQuestion}
         />
