@@ -3,6 +3,8 @@ import "./dataTable.scss";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ViewMcqs from "../questionDetails/mcqs/ViewMcqs";
+import Add from "../add/Add";
+import { baseURL } from "../../data/data";
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // type Props = {
@@ -27,6 +29,7 @@ const DataTable = (props) => {
   // // });
 
   const [open, setOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
   const [requestedQuestion, setREquestedQuestion] = useState({});
 
   const handleDelete = (number) => {
@@ -40,6 +43,11 @@ const DataTable = (props) => {
     setOpen(true);
   };
 
+  const handleEdit = (number) => {
+    setREquestedQuestion(props.rows.find((obj) => obj.id == number));
+    setUpdateOpen(true);
+  };
+
   const actionColumn = {
     field: "action",
     headerName: "Action",
@@ -47,9 +55,9 @@ const DataTable = (props) => {
     renderCell: (params) => {
       return (
         <div className="action">
-          <Link to={`/${props.slug}/${params.row.id}`}>
+          <div className="delete" onClick={() => handleEdit(params.row.id)}>
             <img src="/view.svg" alt="" />
-          </Link>
+          </div>
           <div className="delete" onClick={() => handleView(params.row.id)}>
             <img src="/eye.svg" alt="" />
           </div>
@@ -84,12 +92,22 @@ const DataTable = (props) => {
         pageSizeOptions={[5]}
         // checkboxSelection
         disableRowSelectionOnClick
-        disableColumnFilter
+        // disableColumnFilter
         disableDensitySelector
-        disableColumnSelector
+        // disableColumnSelector
       />
       {open && (
         <ViewMcqs slug="Mcqs" question={requestedQuestion} setOpen={setOpen} />
+      )}
+
+      {updateOpen && (
+        <Add
+          slug="question"
+          columns={props.columns}
+          setOpen={setUpdateOpen}
+          url={baseURL + `/questions/${requestedQuestion.id}`}
+          data={requestedQuestion}
+        />
       )}
     </div>
   );

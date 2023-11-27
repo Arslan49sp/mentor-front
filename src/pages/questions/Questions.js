@@ -89,6 +89,14 @@ const Questions = () => {
     }
   }, [selectedSubjId, addedItem]);
 
+  useEffect(() => {
+    if (selectedChapterId) {
+      setChapterQuestions(
+        questions.filter((question) => question.chapter_id == selectedChapterId)
+      );
+    }
+  }, [questions]);
+
   const handleClassChange = (e) => {
     let id = e.currentTarget.value;
     if (id == 0) {

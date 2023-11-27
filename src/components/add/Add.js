@@ -1,4 +1,3 @@
-import { GridColDef } from "@mui/x-data-grid";
 import "./add.scss";
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -78,6 +77,7 @@ const Add = (props) => {
                   required={column.required}
                   type={column.type}
                   placeholder={column.field}
+                  value={formData[column.field] || ""}
                   onChange={(event) => handleInputChange(event, column.field)}
                 />
               </div>
