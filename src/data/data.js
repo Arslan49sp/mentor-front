@@ -1,5 +1,5 @@
 //defining all the columns for MCQS table.
-export const baseURL = "http://15.207.247.8/api";
+export const baseURL = "http://13.232.222.199/api";
 export const classColumns = [
   {
     field: "name",

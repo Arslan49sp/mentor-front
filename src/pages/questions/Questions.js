@@ -37,6 +37,8 @@ const Questions = () => {
 
   const [questions, setQuestions] = useState([]);
 
+  const [addMcqsData, setAddMcqsData] = useState({});
+
   // Get all the classes
   useEffect(() => {
     setQuestions([]);
@@ -135,7 +137,18 @@ const Questions = () => {
         <>
           <div className="info">
             <h2>MCQS</h2>
-            <button onClick={() => setOpen(true)}>Add New</button>
+            <button
+              onClick={() => {
+                if (selectedChapterId && setSelectedChapterId !== 0) {
+                  {
+                    let v;
+                    setOpen(true);
+                  }
+                } else alert("Please choose a chapter first...");
+              }}
+            >
+              Add New
+            </button>
           </div>
           <DataTable slug="questions" columns={mcqsColumns} rows={questions} />
         </>

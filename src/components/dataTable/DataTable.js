@@ -36,7 +36,7 @@ const DataTable = (props) => {
   };
 
   const handleView = (number) => {
-    console.log(props.rows[number]);
+    setREquestedQuestion(props.rows[number - 1]);
     setOpen(true);
   };
 
@@ -89,7 +89,7 @@ const DataTable = (props) => {
         disableColumnSelector
       />
       {open && (
-        <ViewMcqs slug="Mcqs" columns={requestedQuestion} setOpen={setOpen} />
+        <ViewMcqs slug="Mcqs" question={requestedQuestion} setOpen={setOpen} />
       )}
     </div>
   );
