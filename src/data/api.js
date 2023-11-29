@@ -21,5 +21,9 @@ const getQuestions = async (id) => {
   const url = `/questions?subjectId=${id}`;
   return await axios.get(url);
 };
+const deleteQuestion = async (id) => {
+  const url = `/questions/${id}`;
+  return await axios.delete(url);
+};
 
-export { getClasses, getSubjects, getChapters, getQuestions };
+export { getClasses, getSubjects, getChapters, getQuestions, deleteQuestion };
