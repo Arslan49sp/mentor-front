@@ -12,12 +12,18 @@ const ViewMcqs = (props) => {
         >
           X
         </span>
-        <h1>{slug} detial</h1>
+        <h1>Question detial</h1>
         <h4> Question: {question.stem} </h4>
-        <p className="options">A. {question.option_a} </p>
-        <p className="options">B. {question.option_b} </p>
-        <p className="options">C. {question.option_c} </p>
-        <p className="options">D. {question.option_d} </p>
+        {question.type === "blank" ? (
+          <></>
+        ) : (
+          <>
+            <p className="options">A. {question.option_a} </p>
+            <p className="options">B. {question.option_b} </p>
+            <p className="options">C. {question.option_c} </p>
+            <p className="options">D. {question.option_d} </p>
+          </>
+        )}
 
         <p>
           <span>Correct: </span>

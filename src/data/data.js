@@ -101,6 +101,30 @@ export const mcqsColumns = [
     width: 250,
   },
 ];
+export const blankColumns = [
+  { field: "id", headerName: "ID", width: 50 },
+  {
+    required: "required",
+    field: "stem",
+    type: "string",
+    headerName: "Question Statement",
+    width: 500,
+  },
+  {
+    required: "required",
+    field: "correct_answer",
+    type: "string",
+    headerName: "Answer",
+    width: 200,
+  },
+  {
+    field: "explanation",
+    required: "",
+    type: "string",
+    headerName: "Explaination",
+    width: 500,
+  },
+];
 
 export const menu = [
   {

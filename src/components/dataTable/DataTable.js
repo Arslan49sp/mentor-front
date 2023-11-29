@@ -7,12 +7,6 @@ import Add from "../add/Add";
 import { baseURL } from "../../data/data";
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-// type Props = {
-//   columns: GridColDef[];
-//   rows: object[];
-//   slug: string;
-// };
-
 const DataTable = (props) => {
   // TEST THE API
 
@@ -72,6 +66,20 @@ const DataTable = (props) => {
   return (
     <div className="dataTable">
       <DataGrid
+        sx={{
+          "& .MuiDataGrid-columnHeaderTitle": {
+            whiteSpace: "normal",
+            lineHeight: "normal",
+          },
+          "& .MuiDataGrid-columnHeader": {
+            // Forced to use important since overriding inline styles
+            height: "unset !important",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            // Forced to use important since overriding inline styles
+            maxHeight: "168px !important",
+          },
+        }}
         className="dataGrid"
         rows={props.rows}
         columns={[...props.columns, actionColumn]}
@@ -110,6 +118,7 @@ const DataTable = (props) => {
           }
           url={baseURL + `/questions/${requestedQuestion.id}`}
           data={requestedQuestion}
+          btnLabel="Update"
         />
       )}
     </div>

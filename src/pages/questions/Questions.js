@@ -15,6 +15,7 @@ import {
   baseURL,
   subjectColumns,
   storeChapterCol,
+  blankColumns,
 } from "../../data/data";
 import Add from "../../components/add/Add";
 import { useQuery } from "@tanstack/react-query";
@@ -39,6 +40,8 @@ const Questions = () => {
 
   const [questions, setQuestions] = useState([]);
   const [chapterQuestions, setChapterQuestions] = useState({});
+  const [mcqsQuestions, setMcqsQuestions] = useState({});
+  const [blankQuestions, setBlankQuestion] = useState({});
 
   const [addMcqsData, setAddMcqsData] = useState({});
 
@@ -89,13 +92,24 @@ const Questions = () => {
     }
   }, [selectedSubjId, addedItem]);
 
+  /**
+   * when question update it will re filter them.
+   */
   useEffect(() => {
     if (selectedChapterId) {
       setChapterQuestions(
         questions.filter((question) => question.chapter_id == selectedChapterId)
       );
+      setMcqsQuestions(
+        chapterQuestions.filter(
+          (question) => question.type == "multiple_choice"
+        )
+      );
+      setBlankQuestion(
+        chapterQuestions.filter((question) => question.type == "blank")
+      );
     }
-  }, [questions]);
+  }, [questions, chapterQuestions, selectedChapterId]);
 
   const handleClassChange = (e) => {
     let id = e.currentTarget.value;
@@ -123,9 +137,6 @@ const Questions = () => {
       setAddType("chapter");
     } else {
       setSelectedChapterId(id);
-      setChapterQuestions(
-        questions.filter((question) => question.chapter_id == id)
-      );
     }
   };
 
@@ -168,7 +179,7 @@ const Questions = () => {
                       chapter_id: selectedChapterId,
                       type: "multiple_choice",
                     });
-                    setAddType("question");
+                    setAddType("mcqs");
                     setOpen(true);
                   }
                 } else alert("Please choose a chapter first...");
@@ -180,7 +191,34 @@ const Questions = () => {
           <DataTable
             slug="questions"
             columns={mcqsColumns}
-            rows={chapterQuestions}
+            rows={mcqsQuestions}
+            setAddedItem={setAddedItem}
+          />
+          <hr />
+          {/* Here I'll show all the fill in the blank questions.  */}
+          <div className="info">
+            <h2>Fill In The Blanks</h2>
+            <button
+              onClick={() => {
+                if (selectedChapterId && setSelectedChapterId !== 0) {
+                  {
+                    setAddMcqsData({
+                      chapter_id: selectedChapterId,
+                      type: "blank",
+                    });
+                    setAddType("blanks");
+                    setOpen(true);
+                  }
+                } else alert("Please choose a chapter first...");
+              }}
+            >
+              Add New
+            </button>
+          </div>
+          <DataTable
+            slug="questions"
+            columns={blankColumns}
+            rows={blankQuestions}
             setAddedItem={setAddedItem}
           />
         </>
@@ -191,10 +229,21 @@ const Questions = () => {
       )}
 
       <>
-        {open && (
+        {addType === "mcqs" && (
           <Add
-            slug="question"
+            slug="mcqs"
             columns={mcqsColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/questions"}
+            data={addMcqsData}
+          />
+        )}
+        {addType === "blanks" && (
+          <Add
+            slug="blanks"
+            columns={blankColumns}
             setOpen={setOpen}
             setAddType={setAddType}
             setAddedItem={setAddedItem}

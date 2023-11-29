@@ -4,7 +4,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Add = (props) => {
   const [formData, setFormData] = useState({});
-  const { slug, url, columns, setOpen, setAddType, setAddedItem, data } = props;
+  const {
+    slug,
+    url,
+    columns,
+    setOpen,
+    setAddType,
+    setAddedItem,
+    data,
+    btnLabel,
+  } = props;
 
   useEffect(() => {
     // Merge incomingData with the current state using spread operator
@@ -45,7 +54,6 @@ const Add = (props) => {
     e.preventDefault();
     console.log(url);
     console.log(data);
-
     //add new item
     mutation.mutate();
     console.log("Form Data:", formData);
@@ -64,7 +72,7 @@ const Add = (props) => {
         >
           X
         </span>
-        <h1>Add new {slug}</h1>
+        <h1> {btnLabel ? `Update ${slug}` : `Add new ${slug}`}</h1>
         <form onSubmit={handleSubmit}>
           {columns
             .filter(
@@ -82,7 +90,7 @@ const Add = (props) => {
                 />
               </div>
             ))}
-          <button>Add</button>
+          <button> {btnLabel || "Add"} </button>
         </form>
       </div>
     </div>
