@@ -1,11 +1,19 @@
-import { GridColDef } from "@mui/x-data-grid";
 import "./add.scss";
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Add = (props) => {
   const [formData, setFormData] = useState({});
-  const { slug, url, columns, setOpen, setAddType, setAddedItem, data } = props;
+  const {
+    slug,
+    url,
+    columns,
+    setOpen,
+    setAddType,
+    setAddedItem,
+    data,
+    btnLabel,
+  } = props;
 
   useEffect(() => {
     // Merge incomingData with the current state using spread operator
@@ -46,11 +54,10 @@ const Add = (props) => {
     e.preventDefault();
     console.log(url);
     console.log(data);
-
     //add new item
     mutation.mutate();
     console.log("Form Data:", formData);
-    setAddType("");
+    typeof setAddType === "function" && setAddType("");
     setOpen(false);
   };
   return (
@@ -60,12 +67,12 @@ const Add = (props) => {
           className="close"
           onClick={() => {
             setOpen(false);
-            setAddType("");
+            typeof setAddType === "function" && setAddType("");
           }}
         >
           X
         </span>
-        <h1>Add new {slug}</h1>
+        <h1> {btnLabel ? `Update ${slug}` : `Add new ${slug}`}</h1>
         <form onSubmit={handleSubmit}>
           {columns
             .filter(
@@ -75,14 +82,15 @@ const Add = (props) => {
               <div className="item">
                 <label>{column.headerName}</label>
                 <input
-                  required
+                  required={column.required}
                   type={column.type}
                   placeholder={column.field}
+                  value={formData[column.field] || ""}
                   onChange={(event) => handleInputChange(event, column.field)}
                 />
               </div>
             ))}
-          <button>Send</button>
+          <button> {btnLabel || "Add"} </button>
         </form>
       </div>
     </div>

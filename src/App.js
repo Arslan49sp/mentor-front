@@ -5,12 +5,9 @@ import Notes from "./pages/notes/Notes";
 import Questions from "./pages/questions/Questions";
 import Login from "./pages/login/Login";
 import Navbar from "./components/navbar/Navbar";
-import Menu from "./components/menu/Menu"
-import Footer from "./components/footer/Footer"
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import Menu from "./components/menu/Menu";
+import Footer from "./components/footer/Footer";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 function App() {

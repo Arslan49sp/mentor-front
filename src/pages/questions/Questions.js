@@ -15,8 +15,11 @@ import {
   baseURL,
   subjectColumns,
   storeChapterCol,
+  blankColumns,
 } from "../../data/data";
 import Add from "../../components/add/Add";
+import { useQuery } from "@tanstack/react-query";
+import { stepClasses } from "@mui/material";
 
 const Questions = () => {
   //Fetch data and send to Single Component
@@ -36,10 +39,15 @@ const Questions = () => {
   const [addChapterData, setAddChapterData] = useState();
 
   const [questions, setQuestions] = useState([]);
+  const [chapterQuestions, setChapterQuestions] = useState({});
+  const [mcqsQuestions, setMcqsQuestions] = useState({});
+  const [blankQuestions, setBlankQuestion] = useState({});
+
+  const [addMcqsData, setAddMcqsData] = useState({});
 
   // Get all the classes
   useEffect(() => {
-    setQuestions([]);
+    setAddedItem("");
     getClasses().then((result) => {
       setClasses(result.data.data);
     });
@@ -47,9 +55,10 @@ const Questions = () => {
 
   // Get all the subjects
   useEffect(() => {
-    setQuestions([]);
+    setChapterQuestions([]);
     setChapters([]);
     setSubjects([]);
+    setAddedItem("");
 
     if (selectedClassId != "Classes" && selectedClassId) {
       getSubjects(selectedClassId).then((result) => {
@@ -60,6 +69,8 @@ const Questions = () => {
 
   // Get all the chapters
   useEffect(() => {
+    setChapterQuestions([]);
+    setAddedItem("");
     setQuestions([]);
     setChapters([]);
     if (selectedSubjId !== "Subjects" && selectedSubjId) {
@@ -71,18 +82,42 @@ const Questions = () => {
 
   // Get all the Questions
   useEffect(() => {
+    setAddedItem("");
     if (selectedSubjId !== "Subjects" && selectedSubjId) {
       getQuestions(selectedSubjId).then((result) => {
         setQuestions(result.data.data);
       });
     }
-  }, [selectedSubjId]);
+  }, [selectedSubjId, addedItem]);
+
+  /**
+   * when question update it will re filter them.
+   */
+  useEffect(() => {
+    if (selectedChapterId) {
+      setChapterQuestions(
+        questions.filter((question) => question.chapter_id == selectedChapterId)
+      );
+      setMcqsQuestions(
+        chapterQuestions.filter(
+          (question) => question.type == "multiple_choice"
+        )
+      );
+      setBlankQuestion(
+        chapterQuestions.filter((question) => question.type == "blank")
+      );
+    }
+  }, [questions, chapterQuestions, selectedChapterId]);
 
   const handleClassChange = (e) => {
     let id = e.currentTarget.value;
     if (id == 0) {
       setAddType("class");
-    } else setSelectedClassId(id);
+    } else {
+      setSelectedClassId(id);
+      setSelectedChapterId(null);
+      setSelectedSubjId(null);
+    }
   };
 
   const handleSubjectChange = (e) => {
@@ -92,7 +127,10 @@ const Questions = () => {
         academic_class_id: selectedClassId,
       });
       setAddType("subject");
-    } else setSelectedSubjId(id);
+    } else {
+      setSelectedChapterId(null);
+      setSelectedSubjId(id);
+    }
   };
 
   const handleChapterChange = (e) => {
@@ -102,7 +140,9 @@ const Questions = () => {
         academic_subject_id: selectedSubjId,
       });
       setAddType("chapter");
-    } else setSelectedChapterId(id);
+    } else {
+      setSelectedChapterId(id);
+    }
   };
 
   return (
@@ -112,6 +152,7 @@ const Questions = () => {
       <div className="top-bar">
         <Dropdown
           label="Classes"
+          value={selectedClassId}
           options={classes}
           onChange={handleClassChange}
           onClick={() => setOpen(true)}
@@ -119,56 +160,137 @@ const Questions = () => {
 
         <Dropdown
           label="Subjects"
+          value={selectedSubjId}
           options={subjects}
           onChange={handleSubjectChange}
         />
 
         <Dropdown
           label="Chapters"
+          value={selectedChapterId}
           options={chapters}
           onChange={handleChapterChange}
         />
       </div>
-      {questions.length === 0 ? (
-        <></>
+      {selectedChapterId ? (
+        <>
+          <div className="info">
+            <h2>MCQS</h2>
+            <button
+              onClick={() => {
+                if (selectedChapterId && setSelectedChapterId !== 0) {
+                  {
+                    setAddMcqsData({
+                      chapter_id: selectedChapterId,
+                      type: "multiple_choice",
+                    });
+                    setAddType("mcqs");
+                    setOpen(true);
+                  }
+                } else alert("Please choose a chapter first...");
+              }}
+            >
+              Add New
+            </button>
+          </div>
+          <DataTable
+            slug="questions"
+            columns={mcqsColumns}
+            rows={mcqsQuestions}
+            setAddedItem={setAddedItem}
+          />
+          <hr />
+          {/* Here I'll show all the fill in the blank questions.  */}
+          <div className="info">
+            <h2>Fill In The Blanks</h2>
+            <button
+              onClick={() => {
+                if (selectedChapterId && setSelectedChapterId !== 0) {
+                  {
+                    setAddMcqsData({
+                      chapter_id: selectedChapterId,
+                      type: "blank",
+                    });
+                    setAddType("blanks");
+                    setOpen(true);
+                  }
+                } else alert("Please choose a chapter first...");
+              }}
+            >
+              Add New
+            </button>
+          </div>
+          <DataTable
+            slug="questions"
+            columns={blankColumns}
+            rows={blankQuestions}
+            setAddedItem={setAddedItem}
+          />
+        </>
       ) : (
-        <DataTable slug="questions" columns={mcqsColumns} rows={questions} />
+        <>
+          <p>Please choose class subject and then chapter</p>
+        </>
       )}
 
-      {addType === "class" && (
-        <Add
-          slug="Class"
-          columns={classColumns}
-          setOpen={setOpen}
-          setAddType={setAddType}
-          setAddedItem={setAddedItem}
-          url={baseURL + "/academic-classes"}
-          data={{}}
-        />
-      )}
+      <>
+        {addType === "mcqs" && (
+          <Add
+            slug="mcqs"
+            columns={mcqsColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/questions"}
+            data={addMcqsData}
+          />
+        )}
+        {addType === "blanks" && (
+          <Add
+            slug="blanks"
+            columns={blankColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/questions"}
+            data={addMcqsData}
+          />
+        )}
+        {addType === "class" && (
+          <Add
+            slug="Class"
+            columns={classColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/academic-classes"}
+            data={{}}
+          />
+        )}
 
-      {addType === "subject" && (
-        <Add
-          slug="Subject"
-          columns={subjectColumns}
-          setOpen={setOpen}
-          setAddType={setAddType}
-          setAddedItem={setAddedItem}
-          url={baseURL + "/academic-subjects"}
-          data={addSubjData}
-        />
-      )}
-      {addType === "chapter" && (
-        <Add
-          slug="Chapter"
-          columns={storeChapterCol}
-          setOpen={setOpen}
-          setAddType={setAddType}
-          setAddedItem={setAddedItem}
-          url={baseURL + "/chapters"}
-          data={addChapterData}
-        />
-      )}
+        {addType === "subject" && (
+          <Add
+            slug="Subject"
+            columns={subjectColumns}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/academic-subjects"}
+            data={addSubjData}
+          />
+        )}
+        {addType === "chapter" && (
+          <Add
+            slug="Chapter"
+            columns={storeChapterCol}
+            setOpen={setOpen}
+            setAddType={setAddType}
+            setAddedItem={setAddedItem}
+            url={baseURL + "/chapters"}
+            data={addChapterData}
+          />
+        )}
+      </>
     </div>
   );
 };

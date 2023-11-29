@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://15.207.247.8/api";
+axios.defaults.baseURL = "http://13.232.222.199/api";
 
 const getClasses = async () => {
   const url = "/academic-classes";
@@ -21,5 +21,9 @@ const getQuestions = async (id) => {
   const url = `/questions?subjectId=${id}`;
   return await axios.get(url);
 };
+const deleteQuestion = async (id) => {
+  const url = `/questions/${id}`;
+  return await axios.delete(url);
+};
 
-export { getClasses, getSubjects, getChapters, getQuestions };
+export { getClasses, getSubjects, getChapters, getQuestions, deleteQuestion };
