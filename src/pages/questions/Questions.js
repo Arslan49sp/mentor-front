@@ -48,7 +48,6 @@ const Questions = () => {
   // Get all the classes
   useEffect(() => {
     setAddedItem("");
-    setQuestions([]);
     getClasses().then((result) => {
       setClasses(result.data.data);
     });
@@ -57,7 +56,6 @@ const Questions = () => {
   // Get all the subjects
   useEffect(() => {
     setChapterQuestions([]);
-    setQuestions([]);
     setChapters([]);
     setSubjects([]);
     setAddedItem("");
@@ -115,7 +113,11 @@ const Questions = () => {
     let id = e.currentTarget.value;
     if (id == 0) {
       setAddType("class");
-    } else setSelectedClassId(id);
+    } else {
+      setSelectedClassId(id);
+      setSelectedChapterId(null);
+      setSelectedSubjId(null);
+    }
   };
 
   const handleSubjectChange = (e) => {
@@ -125,7 +127,10 @@ const Questions = () => {
         academic_class_id: selectedClassId,
       });
       setAddType("subject");
-    } else setSelectedSubjId(id);
+    } else {
+      setSelectedChapterId(null);
+      setSelectedSubjId(id);
+    }
   };
 
   const handleChapterChange = (e) => {
