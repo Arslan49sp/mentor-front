@@ -5,7 +5,7 @@ import Room from "../assets/building.svg";
 import Book from "../assets/book.svg";
 import Chapter from "../assets/chapter.svg";
 
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -48,19 +48,19 @@ const Sidebar = () => {
         <ul>
           <li className={location.pathname === "/" ? "active" : ""}>
             <img src={Question} alt="dashboard" />
-            <a href="/">Questions</a>
+            <Link to="/">Questions</Link>
           </li>
           <li className={location.pathname === "/classes" ? "active" : ""}>
             <img src={Room} alt="classes" />
-            <a href="/classes">classes</a>
+            <Link to="/classes">classes</Link>
           </li>
           <li className={location.pathname === "/subjects" ? "active" : ""}>
             <img src={Book} alt="Subject" />
-            <a href="/subjects">Subjects</a>
+            <Link to="/subjects">Subjects</Link>
           </li>
           <li className={location.pathname === "/chapters" ? "active" : ""}>
             <img src={Chapter} alt="chapters" />
-            <a href="/chapters">chapters</a>
+            <Link to="/chapters">chapters</Link>
           </li>
         </ul>
       </div>

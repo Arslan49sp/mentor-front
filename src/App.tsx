@@ -1,4 +1,3 @@
-import "./App.css";
 import "../src/styles/main.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Questions from "./pages/Questions";
