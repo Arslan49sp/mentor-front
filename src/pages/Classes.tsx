@@ -1,22 +1,8 @@
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-
-interface Todo {
-  id: number;
-  title: string;
-  userId: number;
-  completed: boolean;
-}
+import useTodos from "../hooks/useTodos";
 const Classes = () => {
-  const fetchTodos = () =>
-    axios
-      .get<Todo[]>("https://jsonplaceholder.typicode.com/todos")
-      .then((res) => res.data);
-
-  const { data } = useQuery<Todo[], Error>({
-    queryKey: ["todos"],
-    queryFn: fetchTodos,
-  });
+  const { data } = useTodos();
+  const url = import.meta.env.VITE_BASE_URL + "/academic-classes";
+  console.log(url);
   return (
     <ul className="list-group">
       {data?.map((todo) => (

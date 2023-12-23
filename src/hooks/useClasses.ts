@@ -1,20 +1,14 @@
 import axios from "axios";
-import { baseURL } from "../data/api";
+import { preURL } from "../data/api";
 import { useQuery } from "@tanstack/react-query";
 
+export interface Class {
+  id: number;
+  name: string;
+}
 const useClasses = () => {
-  // const url = baseURL + "/academic-classes";
-  // const fetchClasses = () => axios.get(url).then((res) => res.data.data);
-  // const fetchClasses = async () => {
-  //   const response = await axios.get(url);
-  //   return response; // Resolve the Promise with the entire response object
-  // };
-
-  const fetchClasses = () =>
-    fetch("https://jsonplaceholder.typicode.com/posts").then(
-      (response) => response
-    );
-
+  const url = preURL + "/academic-classes";
+  const fetchClasses = () => axios.get<Class[]>(url).then((res) => res.data);
   return useQuery({
     queryKey: ["allClass"],
     queryFn: fetchClasses,
