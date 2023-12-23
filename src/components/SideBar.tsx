@@ -1,48 +1,37 @@
-import { useState } from "react";
 import Question from "../assets/question.svg";
 import Education from "../assets/education.svg";
 import Room from "../assets/building.svg";
 import Book from "../assets/book.svg";
 import Chapter from "../assets/chapter.svg";
-
 import { Link, useLocation } from "react-router-dom";
 
-const Sidebar = () => {
+interface Props {
+  isClose: boolean;
+  setIsClose: () => void;
+}
+const Sidebar = ({ isClose, setIsClose }: Props) => {
   const location = useLocation();
 
-  const [closeMenu, setCloseMenu] = useState(false);
-
-  const handleCloseMenu = () => {
-    setCloseMenu(!closeMenu);
-  };
-
   return (
-    <div className={closeMenu === false ? "sidebar" : "sidebar active"}>
+    <div className={isClose === false ? "sidebar" : "sidebar active"}>
       <div
-        className={
-          closeMenu === false ? "logoContainer" : "logoContainer active"
-        }
+        className={isClose === false ? "logoContainer" : "logoContainer active"}
       >
         <img src={Education} alt="icon" className="logo" />
         <h2 className="title">mentor </h2>
       </div>
       <div
         className={
-          closeMenu === false ? "burgerContainer" : "burgerContainer active"
+          isClose === false ? "burgerContainer" : "burgerContainer active"
         }
       >
-        <div
-          className="burgerTrigger"
-          onClick={() => {
-            handleCloseMenu();
-          }}
-        ></div>
+        <div className="burgerTrigger" onClick={() => setIsClose()}></div>
         <div className="burgerMenu"></div>
       </div>
 
       <div
         className={
-          closeMenu === false ? "contentsContainer" : "contentsContainer active"
+          isClose === false ? "contentsContainer" : "contentsContainer active"
         }
       >
         <ul>

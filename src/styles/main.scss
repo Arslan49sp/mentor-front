@@ -21,6 +21,18 @@ h1 {
     background-color: #f0e5e5;
 }
 
+.content-area {
+    width: calc(100vw - 15rem);
+    float: right;
+    transition: 0.5s all;
+}
+
+.content-area-closed {
+    width: calc(100vw - 5rem);
+    float: right; 
+    transition: 0.5s all;
+}
+
 .sidebar {
     background-color: $white;
     position: absolute;
