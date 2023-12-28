@@ -2,12 +2,12 @@ import axios from "axios";
 import { baseUrl } from "../data/api";
 import { useQuery } from "@tanstack/react-query";
 
-export interface Class {
+interface Class {
   id: number;
   name: string;
 }
 
-export interface Res {
+interface Res {
   status: string;
   message: string;
   data: Class[];
