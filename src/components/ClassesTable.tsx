@@ -1,4 +1,5 @@
 import useClasses from "../hooks/useClasses";
+import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
 
 const ClassesTable = () => {
   const { data, isLoading, error } = useClasses();
@@ -19,30 +20,31 @@ const ClassesTable = () => {
     <table className="table table-bordered">
       <thead>
         <tr className="d-flex">
-          <th className="col-1">#</th>
-          <th className="col-8">Name</th>
-          <th className="col-3">Actions</th>
+          <th className="col-1 text-center">#</th>
+          <th className="col-9">Name</th>
+          <th className="col-2 text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
-        {data.data.map((classI) => (
+        {data.data.map((classI, index) => (
           <tr key={classI.id} className="d-flex">
-            <td className="col-1">{classI.id}</td>
-            <td className="col-8">{classI.name}</td>
-            <td className="col-3"></td>
+            <td className="col-1 text-center ">{index + 1}</td>
+            <td className="col-9">{classI.name}</td>
+            <td className="col-2 text-center">
+              <button className="btn btn-link text-success">
+                <FaRegEye size={25} />
+              </button>
+              <button className="btn btn-link text-success cbtn">
+                <FaPencil size={20} />
+              </button>
+              <button className="btn btn-link text-danger">
+                <FaTrash size={20} />
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>
     </table>
-    // <div>
-    //   <p>Status: {data.status}</p>
-    //   <p>Message: {data.message}</p>
-    //   <ul>
-    //     {data.data.map((classItem) => (
-    //       <li key={classItem.id}>{classItem.name}</li>
-    //     ))}
-    //   </ul>
-    // </div>
   );
 };
 

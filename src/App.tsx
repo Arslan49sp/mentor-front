@@ -1,4 +1,3 @@
-import "../src/styles/main.scss";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Questions from "./pages/Questions";
