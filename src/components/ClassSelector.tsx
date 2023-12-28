@@ -10,7 +10,7 @@ const ClassSelector = ({ setSelectedClassId }: Props) => {
     setSelectedClassId(selectedClassId);
   };
   return (
-    <div className="form-floating">
+    <div className="form-floating col-3">
       <select
         onChange={handleClassChange}
         id="classSelector"

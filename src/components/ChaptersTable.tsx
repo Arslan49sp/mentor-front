@@ -1,8 +1,11 @@
 import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
 import useChapters from "../hooks/useChapters";
 
-const ChaptersTable = () => {
-  const { data, isLoading, error } = useChapters(1);
+interface Props {
+  subjectId: number;
+}
+const ChaptersTable = ({ subjectId }: Props) => {
+  const { data, isLoading, error } = useChapters(subjectId);
 
   if (isLoading) {
     return <div>Loading...</div>;
