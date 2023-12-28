@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 interface Chapter {
   id: number;
   name: string;
+  chapter_number: number;
+  academic_subject_id: number;
 }
 
 interface Res {

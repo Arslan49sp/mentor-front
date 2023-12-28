@@ -1,8 +1,8 @@
 import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
-import useChapters from "../hooks/useChapters";
+import useSubjects from "../hooks/useSubjects";
 
-const ChaptersTable = () => {
-  const { data, isLoading, error } = useChapters(1);
+const SubjectsTable = () => {
+  const { data, isLoading, error } = useSubjects(1);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -48,4 +48,4 @@ const ChaptersTable = () => {
   );
 };
 
-export default ChaptersTable;
+export default SubjectsTable;

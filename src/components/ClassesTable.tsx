@@ -13,14 +13,14 @@ const ClassesTable = () => {
   }
 
   if (!data) {
-    return null; // Handle the case when data is null
+    return null;
   }
 
   return (
     <table className="table table-bordered ">
       <thead>
         <tr className="d-flex">
-          <th>#</th>
+          <th className="sr-width text-center">#</th>
           <th className="flex-grow-1">Name</th>
           <th className="text-center px-5">Actions</th>
         </tr>
@@ -28,7 +28,7 @@ const ClassesTable = () => {
       <tbody>
         {data.data.map((classI, index) => (
           <tr key={classI.id} className="d-flex">
-            <td className="text-center">{index + 1}</td>
+            <td className="sr-width text-center">{index + 1}</td>
             <td className="flex-grow-1">{classI.name}</td>
             <td className="d-flex flex-nowrap gap-0">
               <button className="btn btn-link text-success">
