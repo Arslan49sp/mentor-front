@@ -17,28 +17,28 @@ const ClassesTable = () => {
   }
 
   return (
-    <table className="table table-bordered">
+    <table className="table table-bordered ">
       <thead>
         <tr className="d-flex">
-          <th className="col-1 text-center">#</th>
-          <th className="col-9">Name</th>
-          <th className="col-2 text-center">Actions</th>
+          <th>#</th>
+          <th className="flex-grow-1">Name</th>
+          <th className="text-center px-5">Actions</th>
         </tr>
       </thead>
       <tbody>
         {data.data.map((classI, index) => (
           <tr key={classI.id} className="d-flex">
-            <td className="col-1 text-center ">{index + 1}</td>
-            <td className="col-9">{classI.name}</td>
-            <td className="col-2 text-center">
+            <td className="text-center">{index + 1}</td>
+            <td className="flex-grow-1">{classI.name}</td>
+            <td className="d-flex flex-nowrap gap-0">
               <button className="btn btn-link text-success">
-                <FaRegEye size={25} />
+                <FaRegEye size={23} />
               </button>
-              <button className="btn btn-link text-success cbtn">
-                <FaPencil size={20} />
+              <button className="btn btn-link text-success">
+                <FaPencil size={19} />
               </button>
               <button className="btn btn-link text-danger">
-                <FaTrash size={20} />
+                <FaTrash size={19} />
               </button>
             </td>
           </tr>

@@ -8,7 +8,7 @@ const Classes = () => {
       <hr />
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-success mb-2"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop"
       >
