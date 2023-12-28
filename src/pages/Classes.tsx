@@ -1,17 +1,7 @@
-import useTodos from "../hooks/useTodos";
+import ClassesTable from "../components/ClassesTable";
+
 const Classes = () => {
-  const { data } = useTodos();
-  const url = import.meta.env.VITE_BASE_URL + "/academic-classes";
-  console.log(url);
-  return (
-    <ul className="list-group">
-      {data?.map((todo) => (
-        <li key={todo.id} className="list-group-item">
-          {todo.title}
-        </li>
-      ))}
-    </ul>
-  );
+  return <ClassesTable />;
 };
 
 export default Classes;

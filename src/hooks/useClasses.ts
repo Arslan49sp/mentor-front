@@ -1,15 +1,22 @@
 import axios from "axios";
-import { preURL } from "../data/api";
+import { baseUrl } from "../data/api";
 import { useQuery } from "@tanstack/react-query";
 
 export interface Class {
   id: number;
   name: string;
 }
+
+export interface Res {
+  status: string;
+  message: string;
+  data: Class[];
+}
 const useClasses = () => {
-  const url = preURL + "/academic-classes";
-  const fetchClasses = () => axios.get<Class[]>(url).then((res) => res.data);
-  return useQuery({
+  const url = baseUrl + "/academic-classes";
+  const fetchClasses = () => axios.get<Res>(url).then((res) => res.data);
+
+  return useQuery<Res, Error>({
     queryKey: ["allClass"],
     queryFn: fetchClasses,
     staleTime: 2 * 60 * 1000,

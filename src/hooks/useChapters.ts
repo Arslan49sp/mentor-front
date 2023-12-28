@@ -1,9 +1,9 @@
 import axios from "axios";
-import { preURL } from "../data/api";
+import { baseUrl } from "../data/api";
 import { useQuery } from "@tanstack/react-query";
 
 const useChapters = (subjId: number) => {
-  const url = preURL + `/chapters?subjectId=${subjId}`;
+  const url = baseUrl + `/chapters?subjectId=${subjId}`;
   const fetchChapters = () => axios.get(url).then((res) => res.data.data);
 
   return useQuery({
