@@ -1,8 +1,11 @@
 import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
 import useSubjects from "../hooks/useSubjects";
 
-const SubjectsTable = () => {
-  const { data, isLoading, error } = useSubjects(1);
+interface Props {
+  classId: number;
+}
+const SubjectsTable = ({ classId }: Props) => {
+  const { data, isLoading, error } = useSubjects(classId);
 
   if (isLoading) {
     return <div>Loading...</div>;
