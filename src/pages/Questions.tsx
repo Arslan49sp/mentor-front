@@ -3,6 +3,7 @@ import ClassSelector from "../components/ClassSelector";
 import SubjectSelector from "../components/SubjectSelector";
 import ChaptorsSelector from "../components/ChaptorsSelector";
 import QuestionTypeSelector from "../components/QuestionTypeSelector";
+import QuestionsTable from "../components/QuestionsTable";
 
 const Questions = () => {
   const [selectedClassId, setSelectedClassId] = useState<number>();
@@ -10,7 +11,7 @@ const Questions = () => {
   const [selectedChapterId, setSelectedChapterId] = useState<number>();
   const [selectedQuestionType, setSelectedQuestionType] =
     useState<string>("multiple_choice");
-    
+
   return (
     <div className="p-5">
       <h1>Questions</h1>
@@ -41,6 +42,13 @@ const Questions = () => {
           />
         )}
       </div>
+      {selectedSubjectId && selectedChapterId && (
+        <QuestionsTable
+          subjId={selectedSubjectId}
+          chapterId={selectedChapterId}
+          questionType={selectedQuestionType}
+        />
+      )}
     </div>
   );
 };

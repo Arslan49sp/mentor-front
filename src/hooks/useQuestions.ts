@@ -4,16 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 
 interface Question {
   id: number;
+  type: string;
   stem: string;
-  chapter_id: number;
-  subject_id: number;
-  question_type: string;
   option_a: string;
   option_b: string;
   option_c: string;
   option_d: string;
-  correct: string;
-  explaination: string;
+  chapter_id: number;
+  academic_subject_id: number;
+  correct_answer: string;
+  explanation: string;
   answer: string;
 }
 
