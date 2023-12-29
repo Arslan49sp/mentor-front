@@ -1,4 +1,5 @@
 import useQuestions from "../hooks/useQuestions";
+import McsqsTable from "./McsqsTable";
 
 interface Props {
   subjId: number;
@@ -16,10 +17,22 @@ const QuestionsTable = ({ subjId, chapterId, questionType }: Props) => {
   );
 
   const mcqsQuestions = chapterQuestions.filter(
-    (question) => question.type === questionType
+    (question) => question.type === "multiple_choice"
   );
-  console.log(allQuestions);
-  return <div>QuestionsTable</div>;
+  const blankQuestion = chapterQuestions.filter(
+    (question) => question.type === "blanks"
+  );
+  const shortQuestion = chapterQuestions.filter(
+    (question) => question.type === "short_question"
+  );
+  const longQuestion = chapterQuestions.filter(
+    (question) => question.type === "long_question"
+  );
+
+  if (questionType === "multiple_choice")
+    return <McsqsTable mcqs={mcqsQuestions} />;
+
+  return <div>N/A</div>;
 };
 
 export default QuestionsTable;

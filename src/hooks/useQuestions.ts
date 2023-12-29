@@ -2,7 +2,7 @@ import axios from "axios";
 import { baseUrl } from "../data/api";
 import { useQuery } from "@tanstack/react-query";
 
-interface Question {
+export interface Question {
   id: number;
   type: string;
   stem: string;
