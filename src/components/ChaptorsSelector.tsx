@@ -6,14 +6,14 @@ interface Props {
 }
 const ChaptorsSelector = ({ subjId, setSelectedChapterId }: Props) => {
   const { data } = useChapters(subjId);
-  const handleSubjChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedChapterId = parseInt(event.target.value, 10);
     setSelectedChapterId(selectedChapterId);
   };
   return (
     <div className="form-floating col-3">
       <select
-        onChange={handleSubjChange}
+        onChange={handleChapterChange}
         id="chaptorSelector"
         className="form-select"
       >

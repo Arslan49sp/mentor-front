@@ -36,19 +36,27 @@ const Sidebar = ({ isClose, setIsClose }: Props) => {
       >
         <ul>
           <li className={location.pathname === "/" ? "active" : ""}>
-            <img src={Question} alt="dashboard" />
+            <Link className="img" to="/">
+              <img src={Question} alt="dashboard" />
+            </Link>
             <Link to="/">Questions</Link>
           </li>
           <li className={location.pathname === "/classes" ? "active" : ""}>
-            <img src={Room} alt="classes" />
+            <Link className="img" to="/classes">
+              <img src={Room} alt="classes" />
+            </Link>
             <Link to="/classes">classes</Link>
           </li>
           <li className={location.pathname === "/subjects" ? "active" : ""}>
-            <img src={Book} alt="Subject" />
+            <Link className="img" to="/subjects">
+              <img src={Book} alt="Subject" />
+            </Link>
             <Link to="/subjects">Subjects</Link>
           </li>
           <li className={location.pathname === "/chapters" ? "active" : ""}>
-            <img src={Chapter} alt="chapters" />
+            <Link className="img" to="/chapters">
+              <img src={Chapter} alt="chapters" />
+            </Link>
             <Link to="/chapters">chapters</Link>
           </li>
         </ul>
