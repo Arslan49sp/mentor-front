@@ -10,7 +10,7 @@ const BlankTable = ({ blanks }: Props) => {
       <thead>
         <tr className="d-flex">
           <th className="sr-width text-center">#</th>
-          <th className="col-6">Statement</th>
+          <th className="flex-grow-1">Statement</th>
           <th className="col-2 text-center">Correct</th>
           <th className="text-center px-5">Actions</th>
         </tr>
@@ -20,7 +20,7 @@ const BlankTable = ({ blanks }: Props) => {
           <tr key={question.id} className="d-flex">
             <td className="sr-width text-center">{index + 1}</td>
             <td className="flex-grow-1">{question.stem}</td>
-            <th className="col-2 text-center">{question.correct_answer}</th>
+            <td className="col-2 text-center">{question.correct_answer}</td>
             <td className="d-flex flex-nowrap gap-0">
               <button className="btn btn-link text-success">
                 <FaRegEye size={23} />
