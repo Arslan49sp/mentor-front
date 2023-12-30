@@ -1,7 +1,7 @@
 @import "./_variables";
 
 body {
-    overflow: hidden;
+    overflow-x: hidden;
     height: 100vh;
     width: 100vw;
     font-family: $fontFamily;
@@ -30,7 +30,7 @@ body {
 
 .sidebar {
     background-color: $white;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     padding: 1rem;
