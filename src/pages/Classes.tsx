@@ -12,6 +12,7 @@ const Classes = () => {
   const handleShow = () => {
     setShowModal(true);
   };
+
   return (
     <div className="p-5">
       <h1>Classes</h1>
@@ -19,16 +20,13 @@ const Classes = () => {
       <button
         className="btn btn-success mb-2"
         data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
         onClick={handleShow}
       >
         Add new
       </button>
       <ClassesTable />
-      <AddClassModel
-        showModal={showModal}
-        handleClose={handleClose}
-        onSubmit={(data) => console.log(data)}
-      />
+      <AddClassModel />
     </div>
   );
 };

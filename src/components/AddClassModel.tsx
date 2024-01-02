@@ -1,7 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { useRef } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { baseUrl } from "../data/api";
+import { Class } from "../hooks/useClasses";
+import { useEffect, useRef } from "react";
 
 const schema = z.object({
   name: z
@@ -12,39 +16,46 @@ const schema = z.object({
     }),
 });
 
-type ClassFormData = z.infer<typeof schema>;
-
-interface Props {
-  showModal: boolean;
-  handleClose: () => void;
-  onSubmit: (data: ClassFormData) => void;
-}
-const AddClassModel = ({ onSubmit, showModal, handleClose }: Props) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  const handleShow = () => {
-    if (modalRef.current) {
-      window.$(modalRef.current).modal("show");
-    }
-  };
-
-  handleShow();
+export type ClassFormData = z.infer<typeof schema>;
+const AddClassModel = () => {
+  const modalRef = useRef<HTMLButtonElement>(null);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<ClassFormData>({ resolver: zodResolver(schema) });
+  const storeUrl = baseUrl + "/academic-classes";
+  const queryClient = useQueryClient();
+
+  const addClass = useMutation({
+    mutationFn: (newClass: ClassFormData) =>
+      axios.post<Class>(storeUrl, newClass).then((res) => res.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["allClass"],
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (addClass.isSuccess) {
+      // If the mutation is successful, close the modal
+      const modalElement = modalRef.current;
+      if (modalElement) {
+        modalRef.current.setAttribute("data-bs-dismiss", "modal");
+      }
+    }
+  }, [addClass.isSuccess]);
   return (
     <div
-      className={`modal fade ${showModal ? "show" : ""}`}
-      style={{ display: showModal ? "block" : "none" }}
+      className="modal fade"
       id="staticBackdrop"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
       tabIndex={-1}
       aria-labelledby="staticBackdropLabel"
-      aria-hidden={!showModal}
+      aria-hidden="true"
     >
       <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content">
@@ -57,13 +68,12 @@ const AddClassModel = ({ onSubmit, showModal, handleClose }: Props) => {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={handleClose}
             ></button>
           </div>
           <div className="modal-body">
             <form
               onSubmit={handleSubmit((data) => {
-                onSubmit(data);
+                addClass.mutate(data);
                 reset();
               })}
             >
@@ -79,7 +89,9 @@ const AddClassModel = ({ onSubmit, showModal, handleClose }: Props) => {
                   <p className="text-danger">{errors.name.message} </p>
                 )}
               </div>
-              <button className="btn btn-primary">Submit</button>
+              <button ref={modalRef} className="btn btn-primary">
+                Submit
+              </button>
             </form>
           </div>
         </div>
