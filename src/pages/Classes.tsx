@@ -17,16 +17,11 @@ const Classes = () => {
     <div className="p-5">
       <h1>Classes</h1>
       <hr />
-      <button
-        className="btn btn-success mb-2"
-        data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
-        onClick={handleShow}
-      >
+      <button className="btn btn-success mb-2" onClick={handleShow}>
         Add new
       </button>
       <ClassesTable />
-      <AddClassModel />
+      <AddClassModel isShow={showModal} handleClose={handleClose} />
     </div>
   );
 };
