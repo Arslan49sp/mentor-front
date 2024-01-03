@@ -1,6 +1,7 @@
 import axios from "axios";
 import { baseUrl } from "../data/api";
 import { useQuery } from "@tanstack/react-query";
+import { CACHE_KEY_CLASSES } from "../data/constants";
 
 export interface Class {
   id: number;
@@ -17,7 +18,7 @@ const useClasses = () => {
   const fetchClasses = () => axios.get<ClassRes>(url).then((res) => res.data);
 
   return useQuery<ClassRes, Error>({
-    queryKey: ["allClass"],
+    queryKey: CACHE_KEY_CLASSES,
     queryFn: fetchClasses,
     staleTime: 2 * 60 * 1000,
   });
