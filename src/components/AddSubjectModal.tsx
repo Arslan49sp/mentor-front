@@ -14,13 +14,14 @@ const schema = z.object({
       message: "Name should contain maximum of 50 characters",
     }),
 });
-export type ClassFormData = z.infer<typeof schema>;
+export type SubjectFormData = z.infer<typeof schema>;
 
 interface Props {
+  classId: number;
   handleClose: () => void;
   isShow: boolean;
 }
-const AddClassModel = ({ handleClose, isShow }: Props) => {
+const AddSubjectModal = ({ isShow, handleClose, classId }: Props) => {
   const [showToast, setShowToast] = useState(true);
   //It's a useform hook which provide us different functionalities for handling form.
   const {
@@ -28,10 +29,10 @@ const AddClassModel = ({ handleClose, isShow }: Props) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ClassFormData>({ resolver: zodResolver(schema) });
+  } = useForm<SubjectFormData>({ resolver: zodResolver(schema) });
 
   //mutaion hook
-  const addClass = useAddClass(handleClose);
+  const addSubject = useAddClass(handleClose);
 
   return (
     <>
@@ -43,13 +44,14 @@ const AddClassModel = ({ handleClose, isShow }: Props) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add new class</Modal.Title>
+          <Modal.Title>Add new subject</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
             onSubmit={handleSubmit((data) => {
               setShowToast(true);
-              addClass.mutate(data);
+              const subData = { academic_class_id: classId, ...data };
+              addSubject.mutate(subData);
               reset();
             })}
           >
@@ -67,11 +69,11 @@ const AddClassModel = ({ handleClose, isShow }: Props) => {
             </div>
             <button className="btn btn-primary">Submit</button>
           </form>
-          {addClass.error && (
+          {addSubject.error && (
             <ErrorToast
               isShow={showToast}
               handleClose={() => setShowToast(false)}
-              message={addClass.error.message}
+              message={addSubject.error.message}
             />
           )}
         </Modal.Body>
@@ -80,4 +82,4 @@ const AddClassModel = ({ handleClose, isShow }: Props) => {
   );
 };
 
-export default AddClassModel;
+export default AddSubjectModal;
