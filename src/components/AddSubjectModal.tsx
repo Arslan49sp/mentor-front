@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import useAddClass from "../hooks/useAddClass";
 import ErrorToast from "./ErrorToast";
+import useAddSubject from "../hooks/useAddSubject";
 
 const schema = z.object({
   name: z
@@ -30,9 +30,13 @@ const AddSubjectModal = ({ isShow, handleClose, classId }: Props) => {
     reset,
     formState: { errors },
   } = useForm<SubjectFormData>({ resolver: zodResolver(schema) });
-
+  const CACHE_KEY_SUBJECTS = ["class", classId, "subjects"];
+  const onAdd = () => {
+    reset();
+    handleClose();
+  };
   //mutaion hook
-  const addSubject = useAddClass(handleClose);
+  const addSubject = useAddSubject(onAdd, CACHE_KEY_SUBJECTS);
 
   return (
     <>
@@ -50,9 +54,9 @@ const AddSubjectModal = ({ isShow, handleClose, classId }: Props) => {
           <form
             onSubmit={handleSubmit((data) => {
               setShowToast(true);
-              const subData = { academic_class_id: classId, ...data };
+              const subData = { id: 0, academic_class_id: classId, ...data };
               addSubject.mutate(subData);
-              reset();
+              // reset();
             })}
           >
             <div className="mb-3">

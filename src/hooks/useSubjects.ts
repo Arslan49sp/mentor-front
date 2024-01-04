@@ -2,13 +2,13 @@ import axios from "axios";
 import { baseUrl } from "../data/api";
 import { useQuery } from "@tanstack/react-query";
 
-interface Subject {
+export interface Subject {
   id: number;
   name: string;
   academic_class_id: number;
 }
 
-interface Res {
+export interface SubjectRes {
   status: string;
   message: string;
   data: Subject[];
@@ -16,9 +16,10 @@ interface Res {
 
 const useSubjects = (classId: number) => {
   const url = baseUrl + `/academic-subjects?classId=${classId}`;
-  const fetchSubjects = () => axios.get<Res>(url).then((res) => res.data);
+  const fetchSubjects = () =>
+    axios.get<SubjectRes>(url).then((res) => res.data);
 
-  return useQuery<Res, Error>({
+  return useQuery<SubjectRes, Error>({
     queryKey: ["class", classId, "subjects"],
     queryFn: fetchSubjects,
     staleTime: 2 * 60 * 1000,
