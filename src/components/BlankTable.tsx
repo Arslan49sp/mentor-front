@@ -11,7 +11,7 @@ const BlankTable = ({ blanks }: Props) => {
         <tr className="d-flex">
           <th className="sr-width text-center">#</th>
           <th className="flex-grow-1">Statement</th>
-          <th className="col-2 text-center">Correct</th>
+          <th className="col-2 text-center">Answer</th>
           <th className="text-center px-5">Actions</th>
         </tr>
       </thead>

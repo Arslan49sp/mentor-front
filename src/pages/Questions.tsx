@@ -4,6 +4,7 @@ import SubjectSelector from "../components/SubjectSelector";
 import ChaptorsSelector from "../components/ChaptorsSelector";
 import QuestionTypeSelector from "../components/QuestionTypeSelector";
 import QuestionsTable from "../components/QuestionsTable";
+import AddQuestionModal from "../components/AddQuestionModal";
 
 const Questions = () => {
   const [selectedClassId, setSelectedClassId] = useState<number>();
@@ -11,6 +12,15 @@ const Questions = () => {
   const [selectedChapterId, setSelectedChapterId] = useState<number>();
   const [selectedQuestionType, setSelectedQuestionType] =
     useState<string>("multiple_choice");
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  const handleShow = () => {
+    setShowModal(true);
+  };
 
   return (
     <div className="p-5">
@@ -43,11 +53,25 @@ const Questions = () => {
         )}
       </div>
       {selectedSubjectId && selectedChapterId && (
-        <QuestionsTable
-          subjId={selectedSubjectId}
-          chapterId={selectedChapterId}
-          questionType={selectedQuestionType}
-        />
+        <>
+          <button className="btn btn-success mb-2" onClick={handleShow}>
+            Add New
+          </button>
+          <QuestionsTable
+            subjId={selectedSubjectId}
+            chapterId={selectedChapterId}
+            questionType={selectedQuestionType}
+          />
+          <AddQuestionModal
+            preData={{
+              type: selectedQuestionType,
+              chapterId: selectedChapterId,
+              subjectId: selectedSubjectId,
+            }}
+            isShow={showModal}
+            handleClose={handleClose}
+          />
+        </>
       )}
     </div>
   );

@@ -11,7 +11,7 @@ const LongTable = ({ longs }: Props) => {
         <tr className="d-flex">
           <th className="sr-width text-center">#</th>
           <th className="flex-grow-1">Statement</th>
-          <th className="col-2">Answer</th>
+          <th className="col-4">Answer</th>
           <th className="text-center px-5">Actions</th>
         </tr>
       </thead>
@@ -20,7 +20,7 @@ const LongTable = ({ longs }: Props) => {
           <tr key={question.id} className="d-flex">
             <td className="sr-width text-center">{index + 1}</td>
             <td className="flex-grow-1">{question.stem}</td>
-            <td className="col-4 text-center">{question.correct_answer}</td>
+            <td className="col-4">{question.correct_answer}</td>
             <td className="d-flex flex-nowrap gap-0">
               <button className="btn btn-link text-success">
                 <FaRegEye size={23} />
