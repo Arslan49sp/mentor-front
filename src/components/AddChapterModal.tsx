@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ErrorToast from "./ErrorToast";
-import useAddSubject from "../hooks/useAddSubject";
+import useAddChapter from "../hooks/useAddChapter";
 
 const schema = z.object({
   name: z
@@ -34,13 +34,13 @@ const AddChapterModal = ({ subjectId, handleClose, isShow }: Props) => {
     reset,
     formState: { errors },
   } = useForm<SubjectFormData>({ resolver: zodResolver(schema) });
-  const CACHE_KEY_CHAPTERS = ["class", subjectId, "subjects"];
+  const CACHE_KEY_CHAPTERS = ["subject", subjectId, "chapters"];
   const onAdd = () => {
     reset();
     handleClose();
   };
   //mutaion hook
-  const addSubject = useAddSubject(onAdd, CACHE_KEY_CHAPTERS);
+  const addChapter = useAddChapter(onAdd, CACHE_KEY_CHAPTERS);
 
   return (
     <>
@@ -63,8 +63,7 @@ const AddChapterModal = ({ subjectId, handleClose, isShow }: Props) => {
                 academic_subject_id: subjectId,
                 ...data,
               };
-              //   addSubject.mutate(chapterData);
-              // reset();
+              addChapter.mutate(chapterData);
             })}
           >
             <div className="mb-3">
@@ -82,7 +81,7 @@ const AddChapterModal = ({ subjectId, handleClose, isShow }: Props) => {
             <div className="mb-3">
               <label htmlFor="chNum">Chapter Number</label>
               <input
-                {...register("chapter_number")}
+                {...register("chapter_number", { valueAsNumber: true })}
                 id="chNum"
                 type="number"
                 className="form-control"
@@ -93,11 +92,11 @@ const AddChapterModal = ({ subjectId, handleClose, isShow }: Props) => {
             </div>
             <button className="btn btn-primary">Submit</button>
           </form>
-          {addSubject.error && (
+          {addChapter.error && (
             <ErrorToast
               isShow={showToast}
               handleClose={() => setShowToast(false)}
-              message={addSubject.error.message}
+              message={addChapter.error.message}
             />
           )}
         </Modal.Body>
