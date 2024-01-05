@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ErrorToast from "./ErrorToast";
-import useAddChapter from "../hooks/useAddChapter";
+import useAddQuestion from "../hooks/useAddQuestion";
 
 const schema = z.object({
   stem: z
@@ -16,7 +16,7 @@ const schema = z.object({
   correct_answer: z.string(),
   explanation: z.string(),
 });
-export type SubjectFormData = z.infer<typeof schema>;
+export type QuestionFormData = z.infer<typeof schema>;
 
 interface PreData {
   subjectId: number;
@@ -37,14 +37,14 @@ const AddQuestionModal = ({ preData, handleClose, isShow }: Props) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<SubjectFormData>({ resolver: zodResolver(schema) });
+  } = useForm<QuestionFormData>({ resolver: zodResolver(schema) });
   const CACHE_KEY_QUESTIONS = ["subject", preData.subjectId, "questions"];
   const onAdd = () => {
     reset();
     handleClose();
   };
   //mutaion hook
-  const addChapter = useAddChapter(onAdd, CACHE_KEY_QUESTIONS);
+  const addQuestion = useAddQuestion(onAdd, CACHE_KEY_QUESTIONS);
 
   return (
     <>
@@ -63,12 +63,12 @@ const AddQuestionModal = ({ preData, handleClose, isShow }: Props) => {
             onSubmit={handleSubmit((data) => {
               setShowToast(true);
               const chapterData = {
-                id: 0,
                 type: preData.type,
                 chapter_id: preData.chapterId,
                 ...data,
               };
-              //   addChapter.mutate(chapterData);
+              console.log(chapterData);
+              addQuestion.mutate(chapterData);
             })}
           >
             <div className="mb-3">
@@ -109,11 +109,11 @@ const AddQuestionModal = ({ preData, handleClose, isShow }: Props) => {
             </div>
             <button className="btn btn-primary">Submit</button>
           </form>
-          {addChapter.error && (
+          {addQuestion.error && (
             <ErrorToast
               isShow={showToast}
               handleClose={() => setShowToast(false)}
-              message={addChapter.error.message}
+              message={addQuestion.error.message}
             />
           )}
         </Modal.Body>

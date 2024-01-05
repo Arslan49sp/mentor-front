@@ -5,6 +5,7 @@ import ChaptorsSelector from "../components/ChaptorsSelector";
 import QuestionTypeSelector from "../components/QuestionTypeSelector";
 import QuestionsTable from "../components/QuestionsTable";
 import AddQuestionModal from "../components/AddQuestionModal";
+import AddMcqsModal from "../components/AddMcqsModal";
 
 const Questions = () => {
   const [selectedClassId, setSelectedClassId] = useState<number>();
@@ -62,15 +63,27 @@ const Questions = () => {
             chapterId={selectedChapterId}
             questionType={selectedQuestionType}
           />
-          <AddQuestionModal
-            preData={{
-              type: selectedQuestionType,
-              chapterId: selectedChapterId,
-              subjectId: selectedSubjectId,
-            }}
-            isShow={showModal}
-            handleClose={handleClose}
-          />
+          {selectedQuestionType === "multiple_choice" ? (
+            <AddMcqsModal
+              preData={{
+                type: selectedQuestionType,
+                chapterId: selectedChapterId,
+                subjectId: selectedSubjectId,
+              }}
+              isShow={showModal}
+              handleClose={handleClose}
+            />
+          ) : (
+            <AddQuestionModal
+              preData={{
+                type: selectedQuestionType,
+                chapterId: selectedChapterId,
+                subjectId: selectedSubjectId,
+              }}
+              isShow={showModal}
+              handleClose={handleClose}
+            />
+          )}
         </>
       )}
     </div>

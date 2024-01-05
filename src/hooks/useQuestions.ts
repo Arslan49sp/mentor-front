@@ -14,10 +14,9 @@ export interface Question {
   academic_subject_id: number;
   correct_answer: string;
   explanation: string;
-  answer: string;
 }
 
-interface Res {
+export interface QuestionRes {
   status: string;
   message: string;
   data: Question[];
@@ -25,9 +24,10 @@ interface Res {
 
 const useQuestions = (subjId: number) => {
   const url = baseUrl + `/questions?subjectId=${subjId}`;
-  const fetchQuestions = () => axios.get<Res>(url).then((res) => res.data);
+  const fetchQuestions = () =>
+    axios.get<QuestionRes>(url).then((res) => res.data);
 
-  return useQuery<Res, Error>({
+  return useQuery<QuestionRes, Error>({
     queryKey: ["subject", subjId, "questions"],
     queryFn: fetchQuestions,
     staleTime: 2 * 60 * 1000,
