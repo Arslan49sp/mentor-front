@@ -51,20 +51,6 @@ function App() {
     },
   ]);
   return <RouterProvider router={router} />;
-
-  // return (
-  //   <Router>
-  //     <div className="App">
-  //       <Sidebar />
-  //       <Routes>
-  //         <Route path="/" element={<Questions />} />
-  //         <Route path="/chapters" element={<Chapters />} />
-  //         <Route path="/subjects" element={<Subjects />} />
-  //         <Route path="/classes" element={<Classes />} />
-  //       </Routes>
-  //     </div>
-  //   </Router>
-  // );
 }
 
 export default App;

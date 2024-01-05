@@ -112,10 +112,10 @@ const AddMcqsModal = ({ preData, handleClose, isShow }: Props) => {
             <div className="container-fluid p-0">
               <div className="row mb-1">
                 <div className="col">
-                  <label htmlFor="statement">Option A</label>
+                  <label htmlFor="optionA">Option A</label>
                   <input
                     {...register("option_a")}
-                    id="statement"
+                    id="optionA"
                     type="text"
                     className="form-control"
                   />
@@ -124,10 +124,10 @@ const AddMcqsModal = ({ preData, handleClose, isShow }: Props) => {
                   )}
                 </div>
                 <div className="col">
-                  <label htmlFor="statement">Option B</label>
+                  <label htmlFor="optionB">Option B</label>
                   <input
                     {...register("option_b")}
-                    id="statement"
+                    id="optionB"
                     type="text"
                     className="form-control"
                   />
@@ -138,10 +138,10 @@ const AddMcqsModal = ({ preData, handleClose, isShow }: Props) => {
               </div>
               <div className="row mb-3">
                 <div className="col">
-                  <label htmlFor="statement">Option C</label>
+                  <label htmlFor="optionC">Option C</label>
                   <input
                     {...register("option_c")}
-                    id="statement"
+                    id="optionC"
                     type="text"
                     className="form-control"
                   />
@@ -150,10 +150,10 @@ const AddMcqsModal = ({ preData, handleClose, isShow }: Props) => {
                   )}
                 </div>
                 <div className="col">
-                  <label htmlFor="statement">Option D</label>
+                  <label htmlFor="optionD">Option D</label>
                   <input
                     {...register("option_d")}
-                    id="statement"
+                    id="optionD"
                     type="text"
                     className="form-control"
                   />
