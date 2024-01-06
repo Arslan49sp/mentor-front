@@ -1,21 +1,20 @@
 import { useState } from "react";
-import useClasses from "../hooks/useClasses";
 import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
 import DeleteModal from "./DeleteModal";
+import useClasses from "../hooks/useClasses";
 
 const ClassesTable = () => {
   const { data, isLoading, error } = useClasses();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [currentId, setCurrentId] = useState<number>(0);
 
   const handleClose = () => {
     setShowDeleteModal(false);
   };
 
-  const handleShow = () => {
-    setShowDeleteModal(true);
+  const handleDelete = (id: number) => {
+    console.log("deleted content: " + id);
   };
-
-  const handleDelete = () => {};
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -44,7 +43,10 @@ const ClassesTable = () => {
                 </button>
                 <button
                   className="btn btn-link text-danger"
-                  onClick={handleDelete}
+                  onClick={() => {
+                    setShowDeleteModal(true);
+                    setCurrentId(classI.id);
+                  }}
                 >
                   <FaTrash size={19} />
                 </button>
@@ -56,8 +58,9 @@ const ClassesTable = () => {
       <DeleteModal
         isShow={showDeleteModal}
         handleClose={handleClose}
-        handleDelete={handleDelete}
+        handleDelete={() => handleDelete(currentId)}
       />
+      ;
     </>
   );
 };
