@@ -1,5 +1,3 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import { FaPencil, FaRegEye, FaTrash } from "react-icons/fa6";
 import { addClassUrl } from "../data/api";

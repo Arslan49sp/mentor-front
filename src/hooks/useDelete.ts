@@ -7,7 +7,7 @@ interface RequestRes<T> {
 }
 const useDelete = <T>(handleClose: () => void, currentId: number, cacheKey: (string | number)[] ) => {
     const queryClient = useQueryClient();
-   return useMutation({
+   return useMutation<void, Error, string, unknown>({
         mutationFn: (url: string) =>
           axios.delete(url).then((res) => res.data),
         onSuccess: () => {
