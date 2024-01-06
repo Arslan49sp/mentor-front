@@ -1,6 +1,4 @@
 import useQuestions from "../hooks/useQuestions";
-import BlankTable from "./BlankTable";
-import LongTable from "./LongTable";
 import McsqsTable from "./McsqsTable";
 import ShortTable from "./ShortTable";
 
@@ -33,13 +31,20 @@ const QuestionsTable = ({ subjId, chapterId, questionType }: Props) => {
   );
 
   if (questionType === "multiple_choice")
-    return <McsqsTable mcqs={mcqsQuestions} />;
+    return <McsqsTable mcqs={mcqsQuestions} subjId={subjId} />;
 
-  if (questionType === "blank") return <BlankTable blanks={blankQuestion} />;
+  if (questionType === "blank")
+    return (
+      <ShortTable shorts={blankQuestion} type={questionType} subjId={subjId} />
+    );
   if (questionType === "short_question")
-    return <ShortTable shorts={shortQuestion} />;
+    return (
+      <ShortTable shorts={shortQuestion} type={questionType} subjId={subjId} />
+    );
   if (questionType === "long_question")
-    return <LongTable longs={longQuestion} />;
+    return (
+      <ShortTable shorts={longQuestion} type={questionType} subjId={subjId} />
+    );
 
   return <div>N/A</div>;
 };
