@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { ClassFormData } from "../components/AddClassModel";
-import { addClassUrl } from "../data/api";
 import { Class, ClassRes } from "./useClasses";
 import { CACHE_KEY_CLASSES } from "../data/constants";
 
@@ -11,13 +10,14 @@ interface addClassRes {
   data: Class;
 }
 
-const useAddClass = (onAdd: () => void) => {
+const useAddClass = (onAdd: () => void, url: string, slug: string | undefined) => {
   const queryClient = useQueryClient();
   return useMutation<addClassRes, Error, ClassFormData>({
     mutationFn: (newClass: ClassFormData) =>
-      axios.post<addClassRes>(addClassUrl, newClass).then((res) => res.data),
+      axios.post<addClassRes>(url, newClass).then((res) => res.data),
     onSuccess: (savedClass) => {
-      // queryClient.invalidateQueries(["allClass"]); //first approach
+      slug ? 
+       queryClient.invalidateQueries(["allClass"]) : //first approach
       queryClient.setQueryData<ClassRes | undefined>(
         CACHE_KEY_CLASSES,
         (classRes) => {

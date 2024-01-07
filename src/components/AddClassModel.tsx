@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useAddClass from "../hooks/useAddClass";
 import ErrorToast from "./ErrorToast";
+import { Class } from "../hooks/useClasses";
+import { addClassUrl } from "../data/api";
 
 const schema = z.object({
   name: z
@@ -19,19 +21,36 @@ export type ClassFormData = z.infer<typeof schema>;
 interface Props {
   handleClose: () => void;
   isShow: boolean;
+  currentClass?: Class | null;
+  slug?: string;
 }
-const AddClassModel = ({ handleClose, isShow }: Props) => {
+const AddClassModel = ({ handleClose, isShow, currentClass, slug }: Props) => {
   const [showToast, setShowToast] = useState(true);
   //It's a useform hook which provide us different functionalities for handling form.
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<ClassFormData>({ resolver: zodResolver(schema) });
 
+  // Set the initial form data based on the currentClass
+  useEffect(() => {
+    if (currentClass) {
+      Object.entries(currentClass).forEach(([key, value]) => {
+        setValue(key as "name", value);
+      });
+    }
+  }, [currentClass, setValue]);
+
+  let url;
+  currentClass
+    ? (url = addClassUrl + "/" + currentClass.id)
+    : (url = addClassUrl);
+
   //mutaion hook
-  const addClass = useAddClass(handleClose);
+  const addClass = useAddClass(handleClose, url, slug);
 
   return (
     <>
@@ -43,7 +62,7 @@ const AddClassModel = ({ handleClose, isShow }: Props) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add new class</Modal.Title>
+          <Modal.Title>{slug ? slug : "add new"} class</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
@@ -65,7 +84,9 @@ const AddClassModel = ({ handleClose, isShow }: Props) => {
                 <p className="text-danger">{errors.name.message} </p>
               )}
             </div>
-            <button className="btn btn-primary">Submit</button>
+            <button className="btn btn-primary">
+              {slug ? slug : "Submit"}
+            </button>
           </form>
           {addClass.error && (
             <ErrorToast

@@ -2,42 +2,25 @@ import { useState } from "react";
 import { FaPencil, FaRegEye, FaTrash } from "react-icons/fa6";
 import { addClassUrl } from "../data/api";
 import { CACHE_KEY_CLASSES } from "../data/constants";
-import useClasses, { ClassRes } from "../hooks/useClasses";
+import useClasses, { Class, ClassRes } from "../hooks/useClasses";
 import DeleteModal from "./DeleteModal";
 import useDelete from "../hooks/useDelete";
+import AddClassModel from "./AddClassModel";
 
 const ClassesTable = () => {
   const { data, isLoading, error } = useClasses();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
+  const [currentQuestion, setCurrentQuestion] = useState<Class | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleUpdateClose = () => {
+    setShowModal(false);
+  };
 
   const handleClose = () => {
     setShowDeleteModal(false);
   };
-
-  // const queryClient = useQueryClient();
-  // const mutation = useMutation({
-  //   mutationFn: (id: number) =>
-  //     axios.delete(addClassUrl + "/" + id).then((res) => res.data),
-  //   onSuccess: () => {
-  //     // queryClient.invalidateQueries(["allClass"]); //first approach
-  //     queryClient.setQueryData<ClassRes | undefined>(
-  //       CACHE_KEY_CLASSES,
-  //       (classRes) => {
-  //         const existingClasses = classRes?.data || [];
-  //         const newClasses = existingClasses.filter(
-  //           (cls) => cls.id !== currentId
-  //         );
-  //         return {
-  //           data: newClasses,
-  //           status: classRes?.status || "",
-  //           message: classRes?.message || "",
-  //         };
-  //       }
-  //     );
-  //     handleClose();
-  //   },
-  // });
 
   const mutation = useDelete<ClassRes>(
     handleClose,
@@ -72,7 +55,13 @@ const ClassesTable = () => {
                 <button className="btn btn-link text-success">
                   <FaRegEye size={23} />
                 </button>
-                <button className="btn btn-link text-success">
+                <button
+                  className="btn btn-link text-success"
+                  onClick={() => {
+                    setShowModal(true);
+                    setCurrentQuestion(classI);
+                  }}
+                >
                   <FaPencil size={19} />
                 </button>
                 <button
@@ -93,6 +82,12 @@ const ClassesTable = () => {
         isShow={showDeleteModal}
         handleClose={handleClose}
         handleDelete={() => handleDelete(currentId)}
+      />
+      <AddClassModel
+        isShow={showModal}
+        handleClose={handleUpdateClose}
+        currentClass={currentQuestion}
+        slug="Update"
       />
     </>
   );
