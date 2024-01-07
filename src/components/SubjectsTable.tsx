@@ -15,7 +15,7 @@ const SubjectsTable = ({ classId }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
   const [showToast, setShowToast] = useState(true);
-  const [currentClass, setCurrentClass] = useState<Subject | null>(null);
+  const [currentSubject, setCurrentSubject] = useState<Subject | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   const handleUpdateClose = () => {
@@ -67,14 +67,14 @@ const SubjectsTable = ({ classId }: Props) => {
                 <button className="btn btn-link text-success">
                   <FaRegEye size={23} />
                 </button>
-                <button className="btn btn-link text-success">
-                  <FaPencil
-                    size={19}
-                    onClick={() => {
-                      setShowModal(true);
-                      setCurrentClass(classI);
-                    }}
-                  />
+                <button
+                  className="btn btn-link text-success"
+                  onClick={() => {
+                    setShowModal(true);
+                    setCurrentSubject(classI);
+                  }}
+                >
+                  <FaPencil size={19} />
                 </button>
                 <button
                   className="btn btn-link text-danger"
@@ -99,7 +99,7 @@ const SubjectsTable = ({ classId }: Props) => {
         classId={classId}
         isShow={showModal}
         handleClose={handleUpdateClose}
-        currentClass={currentClass}
+        currentSubject={currentSubject}
         slug="Update"
       />
     </>

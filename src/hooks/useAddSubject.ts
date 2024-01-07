@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { addSubjectUrl } from "../data/api";
 import { Subject, SubjectRes } from "./useSubjects";
 
 interface addSubjectRes {

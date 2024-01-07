@@ -1,10 +1,11 @@
 import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
-import useChapters, { ChapterRes } from "../hooks/useChapters";
+import useChapters, { Chapter, ChapterRes } from "../hooks/useChapters";
 import { useState } from "react";
 import { baseUrl } from "../data/api";
 import useDelete from "../hooks/useDelete";
 import ErrorToast from "./ErrorToast";
 import DeleteModal from "./DeleteModal";
+import AddChapterModal from "./AddChapterModal";
 
 interface Props {
   subjectId: number;
@@ -14,6 +15,12 @@ const ChaptersTable = ({ subjectId }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
   const [showToast, setShowToast] = useState(true);
+  const [currentSubject, setCurrentSubject] = useState<Chapter | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleUpdateClose = () => {
+    setShowModal(false);
+  };
 
   const handleClose = () => {
     setShowDeleteModal(false);
@@ -60,7 +67,13 @@ const ChaptersTable = ({ subjectId }: Props) => {
                 <button className="btn btn-link text-success">
                   <FaRegEye size={23} />
                 </button>
-                <button className="btn btn-link text-success">
+                <button
+                  className="btn btn-link text-success"
+                  onClick={() => {
+                    setShowModal(true);
+                    setCurrentSubject(classI);
+                  }}
+                >
                   <FaPencil size={19} />
                 </button>
                 <button
@@ -81,6 +94,14 @@ const ChaptersTable = ({ subjectId }: Props) => {
         isShow={showDeleteModal}
         handleClose={handleClose}
         handleDelete={() => handleDelete(currentId)}
+      />
+
+      <AddChapterModal
+        subjectId={subjectId}
+        isShow={showModal}
+        handleClose={handleUpdateClose}
+        currentSubject={currentSubject}
+        slug="Update"
       />
     </>
   );

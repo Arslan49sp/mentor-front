@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ErrorToast from "./ErrorToast";
 import useAddChapter from "../hooks/useAddChapter";
+import { Chapter } from "../hooks/useChapters";
+import { addChapterUrl } from "../data/api";
 
 const schema = z.object({
   name: z
@@ -24,23 +26,50 @@ interface Props {
   subjectId: number;
   handleClose: () => void;
   isShow: boolean;
+  currentSubject?: Chapter | null;
+  slug?: string;
 }
-const AddChapterModal = ({ subjectId, handleClose, isShow }: Props) => {
+const AddChapterModal = ({
+  subjectId,
+  handleClose,
+  isShow,
+  currentSubject,
+  slug,
+}: Props) => {
   const [showToast, setShowToast] = useState(true);
   //It's a useform hook which provide us different functionalities for handling form.
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<SubjectFormData>({ resolver: zodResolver(schema) });
+  // Set the initial form data based on the currentClass
+  useEffect(() => {
+    if (currentSubject) {
+      Object.entries(currentSubject).forEach(([key, value]) => {
+        setValue(key as "name", value);
+      });
+    }
+  }, [currentSubject, setValue]);
   const CACHE_KEY_CHAPTERS = ["subject", subjectId, "chapters"];
   const onAdd = () => {
     reset();
     handleClose();
   };
+  let url;
+  currentSubject
+    ? (url = addChapterUrl + "/" + currentSubject.id)
+    : (url = addChapterUrl);
   //mutaion hook
-  const addChapter = useAddChapter(onAdd, CACHE_KEY_CHAPTERS);
+  const addChapter = useAddChapter(
+    onAdd,
+    CACHE_KEY_CHAPTERS,
+    url,
+    slug,
+    currentSubject?.id
+  );
 
   return (
     <>
@@ -52,7 +81,7 @@ const AddChapterModal = ({ subjectId, handleClose, isShow }: Props) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add new chapter</Modal.Title>
+          <Modal.Title>{slug ? slug : "add new"} chapter</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
@@ -90,7 +119,9 @@ const AddChapterModal = ({ subjectId, handleClose, isShow }: Props) => {
                 <p className="text-danger">{errors.chapter_number.message} </p>
               )}
             </div>
-            <button className="btn btn-primary">Submit</button>
+            <button className="btn btn-primary">
+              {slug ? slug : "Submit"}
+            </button>
           </form>
           {addChapter.error && (
             <ErrorToast

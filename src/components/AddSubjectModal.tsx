@@ -22,14 +22,14 @@ interface Props {
   classId: number;
   handleClose: () => void;
   isShow: boolean;
-  currentClass?: Subject | null;
+  currentSubject?: Subject | null;
   slug?: string;
 }
 const AddSubjectModal = ({
   isShow,
   handleClose,
   classId,
-  currentClass,
+  currentSubject,
   slug,
 }: Props) => {
   const [showToast, setShowToast] = useState(true);
@@ -44,12 +44,12 @@ const AddSubjectModal = ({
 
   // Set the initial form data based on the currentClass
   useEffect(() => {
-    if (currentClass) {
-      Object.entries(currentClass).forEach(([key, value]) => {
+    if (currentSubject) {
+      Object.entries(currentSubject).forEach(([key, value]) => {
         setValue(key as "name", value);
       });
     }
-  }, [currentClass, setValue]);
+  }, [currentSubject, setValue]);
   const CACHE_KEY_SUBJECTS = ["class", classId, "subjects"];
   const onAdd = () => {
     reset();
@@ -57,8 +57,8 @@ const AddSubjectModal = ({
   };
 
   let url;
-  currentClass
-    ? (url = addSubjectUrl + "/" + currentClass.id)
+  currentSubject
+    ? (url = addSubjectUrl + "/" + currentSubject.id)
     : (url = addSubjectUrl);
 
   //mutaion hook
@@ -67,7 +67,7 @@ const AddSubjectModal = ({
     CACHE_KEY_SUBJECTS,
     url,
     slug,
-    currentClass?.id
+    currentSubject?.id
   );
 
   return (

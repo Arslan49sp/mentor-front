@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { addChapterUrl } from "../data/api";
 import { Chapter, ChapterRes } from "./useChapters";
 
 interface addChapterRes {
@@ -9,12 +8,12 @@ interface addChapterRes {
   data: Chapter;
 }
 
-const useAddChapter = (onAdd: () => void, cacheKey: (string | number)[]) => {
+const useAddChapter = (onAdd: () => void, cacheKey: (string | number)[], url: string, slug: string | undefined, id: number | undefined) => {
   const queryClient = useQueryClient();
   return useMutation<addChapterRes, Error, Chapter>({
     mutationFn: (newChapter) =>
       axios
-        .post<addChapterRes>(addChapterUrl, newChapter)
+        .post<addChapterRes>(url, newChapter)
         .then((res) => res.data),
     onSuccess: (savedChapter) => {
       // queryClient.invalidateQueries(["allClass"]); //first approach
@@ -22,8 +21,13 @@ const useAddChapter = (onAdd: () => void, cacheKey: (string | number)[]) => {
         cacheKey,
         (chapterRes) => {
           const existingChapters = chapterRes?.data || [];
+          let finalChapters;
+          slug ?
+           finalChapters = existingChapters.filter(
+            (cls) => cls.id !== id
+          ): finalChapters = existingChapters
           return {
-            data: [savedChapter.data, ...existingChapters],
+            data: [savedChapter.data, ...finalChapters],
             status: chapterRes?.status || "",
             message: chapterRes?.message || "",
           };
