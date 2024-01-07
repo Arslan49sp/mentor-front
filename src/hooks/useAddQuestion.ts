@@ -15,12 +15,12 @@ interface NewQuestion extends QuestionFormData {
   chapter_id: number;
 }
 
-const useAddQuestion = (onAdd: () => void, cacheKey: (string | number)[]) => {
+const useAddQuestion = (onAdd: () => void, cacheKey: (string | number)[], url: string, slug: string | undefined, id: number | undefined) => {
   const queryClient = useQueryClient();
   return useMutation<addQuestionRes, Error, NewQuestion>({
     mutationFn: (newQuestion) =>
       axios
-        .post<addQuestionRes>(addQuestionUrl, newQuestion)
+        .post<addQuestionRes>(url, newQuestion)
         .then((res) => res.data),
     onSuccess: (savedQuestion) => {
       // queryClient.invalidateQueries(["allClass"]); //first approach
@@ -28,8 +28,13 @@ const useAddQuestion = (onAdd: () => void, cacheKey: (string | number)[]) => {
         cacheKey,
         (questionRes) => {
           const existingChapters = questionRes?.data || [];
+          let finalChapters;
+          slug ?
+           finalChapters = existingChapters.filter(
+            (cls) => cls.id !== id
+          ): finalChapters = existingChapters
           return {
-            data: [savedQuestion.data, ...existingChapters],
+            data: [savedQuestion.data, ...finalChapters],
             status: questionRes?.status || "",
             message: questionRes?.message || "",
           };

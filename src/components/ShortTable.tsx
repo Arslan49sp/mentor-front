@@ -5,16 +5,24 @@ import useDelete from "../hooks/useDelete";
 import { baseUrl } from "../data/api";
 import ErrorToast from "./ErrorToast";
 import DeleteModal from "./DeleteModal";
+import AddQuestionModal, { PreData } from "./AddQuestionModal";
 
 interface Props {
+  preData: PreData;
   shorts: Question[];
   type: string;
   subjId: number;
 }
-const ShortTable = ({ shorts, type, subjId }: Props) => {
+const ShortTable = ({ shorts, type, subjId, preData }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
   const [showToast, setShowToast] = useState(true);
+  const [currentChapter, setCurrentChapter] = useState<Question | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleUpdateClose = () => {
+    setShowModal(false);
+  };
 
   const handleClose = () => {
     setShowDeleteModal(false);
@@ -62,7 +70,13 @@ const ShortTable = ({ shorts, type, subjId }: Props) => {
                 <button className="btn btn-link text-success">
                   <FaRegEye size={23} />
                 </button>
-                <button className="btn btn-link text-success">
+                <button
+                  className="btn btn-link text-success"
+                  onClick={() => {
+                    setShowModal(true);
+                    setCurrentChapter(question);
+                  }}
+                >
                   <FaPencil size={19} />
                 </button>
                 <button
@@ -83,6 +97,14 @@ const ShortTable = ({ shorts, type, subjId }: Props) => {
         isShow={showDeleteModal}
         handleClose={handleClose}
         handleDelete={() => handleDelete(currentId)}
+      />
+
+      <AddQuestionModal
+        preData={preData}
+        isShow={showModal}
+        handleClose={handleUpdateClose}
+        currentChapter={currentChapter}
+        slug="Update"
       />
     </>
   );

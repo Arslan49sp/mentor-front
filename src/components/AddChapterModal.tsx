@@ -26,14 +26,14 @@ interface Props {
   subjectId: number;
   handleClose: () => void;
   isShow: boolean;
-  currentSubject?: Chapter | null;
+  currentChapter?: Chapter | null;
   slug?: string;
 }
 const AddChapterModal = ({
   subjectId,
   handleClose,
   isShow,
-  currentSubject,
+  currentChapter,
   slug,
 }: Props) => {
   const [showToast, setShowToast] = useState(true);
@@ -47,20 +47,20 @@ const AddChapterModal = ({
   } = useForm<SubjectFormData>({ resolver: zodResolver(schema) });
   // Set the initial form data based on the currentClass
   useEffect(() => {
-    if (currentSubject) {
-      Object.entries(currentSubject).forEach(([key, value]) => {
+    if (currentChapter) {
+      Object.entries(currentChapter).forEach(([key, value]) => {
         setValue(key as "name", value);
       });
     }
-  }, [currentSubject, setValue]);
+  }, [currentChapter, setValue]);
   const CACHE_KEY_CHAPTERS = ["subject", subjectId, "chapters"];
   const onAdd = () => {
     reset();
     handleClose();
   };
   let url;
-  currentSubject
-    ? (url = addChapterUrl + "/" + currentSubject.id)
+  currentChapter
+    ? (url = addChapterUrl + "/" + currentChapter.id)
     : (url = addChapterUrl);
   //mutaion hook
   const addChapter = useAddChapter(
@@ -68,7 +68,7 @@ const AddChapterModal = ({
     CACHE_KEY_CHAPTERS,
     url,
     slug,
-    currentSubject?.id
+    currentChapter?.id
   );
 
   return (

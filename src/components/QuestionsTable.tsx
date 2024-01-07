@@ -30,20 +30,41 @@ const QuestionsTable = ({ subjId, chapterId, questionType }: Props) => {
     (question) => question.type === "long_question"
   );
 
+  const preData = {
+    subjectId: subjId,
+    chapterId: chapterId,
+    type: questionType,
+  };
+
   if (questionType === "multiple_choice")
     return <McsqsTable mcqs={mcqsQuestions} subjId={subjId} />;
 
   if (questionType === "blank")
     return (
-      <ShortTable shorts={blankQuestion} type={questionType} subjId={subjId} />
+      <ShortTable
+        shorts={blankQuestion}
+        type={questionType}
+        subjId={subjId}
+        preData={preData}
+      />
     );
   if (questionType === "short_question")
     return (
-      <ShortTable shorts={shortQuestion} type={questionType} subjId={subjId} />
+      <ShortTable
+        shorts={shortQuestion}
+        type={questionType}
+        subjId={subjId}
+        preData={preData}
+      />
     );
   if (questionType === "long_question")
     return (
-      <ShortTable shorts={longQuestion} type={questionType} subjId={subjId} />
+      <ShortTable
+        shorts={longQuestion}
+        type={questionType}
+        subjId={subjId}
+        preData={preData}
+      />
     );
 
   return <div>N/A</div>;

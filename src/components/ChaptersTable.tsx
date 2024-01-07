@@ -15,7 +15,7 @@ const ChaptersTable = ({ subjectId }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
   const [showToast, setShowToast] = useState(true);
-  const [currentSubject, setCurrentSubject] = useState<Chapter | null>(null);
+  const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   const handleUpdateClose = () => {
@@ -71,7 +71,7 @@ const ChaptersTable = ({ subjectId }: Props) => {
                   className="btn btn-link text-success"
                   onClick={() => {
                     setShowModal(true);
-                    setCurrentSubject(classI);
+                    setCurrentChapter(classI);
                   }}
                 >
                   <FaPencil size={19} />
@@ -100,7 +100,7 @@ const ChaptersTable = ({ subjectId }: Props) => {
         subjectId={subjectId}
         isShow={showModal}
         handleClose={handleUpdateClose}
-        currentSubject={currentSubject}
+        currentChapter={currentChapter}
         slug="Update"
       />
     </>
