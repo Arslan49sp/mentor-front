@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ErrorToast from "./ErrorToast";
 import useAddQuestion from "../hooks/useAddQuestion";
+import { Question } from "../hooks/useQuestions";
+import { addQuestionUrl } from "../data/api";
 
 const schema = z.object({
   stem: z
@@ -53,23 +55,51 @@ interface Props {
   preData: PreData;
   handleClose: () => void;
   isShow: boolean;
+  currentChapter?: Question | null;
+  slug?: string;
 }
-const AddMcqsModal = ({ preData, handleClose, isShow }: Props) => {
+const AddMcqsModal = ({
+  preData,
+  handleClose,
+  isShow,
+  currentChapter,
+  slug,
+}: Props) => {
   const [showToast, setShowToast] = useState(true);
   //It's a useform hook which provide us different functionalities for handling form.
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<QuestionFormData>({ resolver: zodResolver(schema) });
+
+  useEffect(() => {
+    if (currentChapter) {
+      Object.entries(currentChapter).forEach(([key, value]) => {
+        setValue(key, value);
+      });
+    }
+  }, [currentChapter, setValue]);
   const CACHE_KEY_QUESTIONS = ["subject", preData.subjectId, "questions"];
   const onAdd = () => {
     reset();
     handleClose();
   };
+
+  let url;
+  currentChapter
+    ? (url = addQuestionUrl + "/" + currentChapter.id)
+    : (url = addQuestionUrl);
   //mutaion hook
-  const addQuestion = useAddQuestion(onAdd, CACHE_KEY_QUESTIONS);
+  const addQuestion = useAddQuestion(
+    onAdd,
+    CACHE_KEY_QUESTIONS,
+    url,
+    slug,
+    currentChapter?.id
+  );
 
   return (
     <>
@@ -81,7 +111,7 @@ const AddMcqsModal = ({ preData, handleClose, isShow }: Props) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add new question</Modal.Title>
+          <Modal.Title>{slug ? slug : "Add new"} question</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
@@ -187,7 +217,9 @@ const AddMcqsModal = ({ preData, handleClose, isShow }: Props) => {
                 <p className="text-danger">{errors.explanation.message} </p>
               )}
             </div>
-            <button className="btn btn-primary">Submit</button>
+            <button className="btn btn-primary">
+              {slug ? slug : "Submit"}
+            </button>
           </form>
           {addQuestion.error && (
             <ErrorToast

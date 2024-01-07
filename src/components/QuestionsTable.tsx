@@ -37,7 +37,9 @@ const QuestionsTable = ({ subjId, chapterId, questionType }: Props) => {
   };
 
   if (questionType === "multiple_choice")
-    return <McsqsTable mcqs={mcqsQuestions} subjId={subjId} />;
+    return (
+      <McsqsTable mcqs={mcqsQuestions} subjId={subjId} preData={preData} />
+    );
 
   if (questionType === "blank")
     return (
