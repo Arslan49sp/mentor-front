@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ErrorToast from "./ErrorToast";
 import useAddSubject from "../hooks/useAddSubject";
+import { Subject } from "../hooks/useSubjects";
+import { addSubjectUrl } from "../data/api";
 
 const schema = z.object({
   name: z
@@ -20,23 +22,53 @@ interface Props {
   classId: number;
   handleClose: () => void;
   isShow: boolean;
+  currentClass?: Subject | null;
+  slug?: string;
 }
-const AddSubjectModal = ({ isShow, handleClose, classId }: Props) => {
+const AddSubjectModal = ({
+  isShow,
+  handleClose,
+  classId,
+  currentClass,
+  slug,
+}: Props) => {
   const [showToast, setShowToast] = useState(true);
   //It's a useform hook which provide us different functionalities for handling form.
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<SubjectFormData>({ resolver: zodResolver(schema) });
+
+  // Set the initial form data based on the currentClass
+  useEffect(() => {
+    if (currentClass) {
+      Object.entries(currentClass).forEach(([key, value]) => {
+        setValue(key as "name", value);
+      });
+    }
+  }, [currentClass, setValue]);
   const CACHE_KEY_SUBJECTS = ["class", classId, "subjects"];
   const onAdd = () => {
     reset();
     handleClose();
   };
+
+  let url;
+  currentClass
+    ? (url = addSubjectUrl + "/" + currentClass.id)
+    : (url = addSubjectUrl);
+
   //mutaion hook
-  const addSubject = useAddSubject(onAdd, CACHE_KEY_SUBJECTS);
+  const addSubject = useAddSubject(
+    onAdd,
+    CACHE_KEY_SUBJECTS,
+    url,
+    slug,
+    currentClass?.id
+  );
 
   return (
     <>
@@ -48,7 +80,7 @@ const AddSubjectModal = ({ isShow, handleClose, classId }: Props) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add new subject</Modal.Title>
+          <Modal.Title>{slug ? slug : "add new"} subject</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
@@ -71,7 +103,9 @@ const AddSubjectModal = ({ isShow, handleClose, classId }: Props) => {
                 <p className="text-danger">{errors.name.message} </p>
               )}
             </div>
-            <button className="btn btn-primary">Submit</button>
+            <button className="btn btn-primary">
+              {slug ? slug : "Submit"}
+            </button>
           </form>
           {addSubject.error && (
             <ErrorToast

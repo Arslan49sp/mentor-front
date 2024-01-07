@@ -11,7 +11,7 @@ const ClassesTable = () => {
   const { data, isLoading, error } = useClasses();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
-  const [currentQuestion, setCurrentQuestion] = useState<Class | null>(null);
+  const [currentClass, setCurrentClass] = useState<Class | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   const handleUpdateClose = () => {
@@ -59,7 +59,7 @@ const ClassesTable = () => {
                   className="btn btn-link text-success"
                   onClick={() => {
                     setShowModal(true);
-                    setCurrentQuestion(classI);
+                    setCurrentClass(classI);
                   }}
                 >
                   <FaPencil size={19} />
@@ -86,7 +86,7 @@ const ClassesTable = () => {
       <AddClassModel
         isShow={showModal}
         handleClose={handleUpdateClose}
-        currentClass={currentQuestion}
+        currentClass={currentClass}
         slug="Update"
       />
     </>

@@ -1,10 +1,11 @@
 import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
-import useSubjects, { SubjectRes } from "../hooks/useSubjects";
+import useSubjects, { Subject, SubjectRes } from "../hooks/useSubjects";
 import { useState } from "react";
 import useDelete from "../hooks/useDelete";
 import { baseUrl } from "../data/api";
 import DeleteModal from "./DeleteModal";
 import ErrorToast from "./ErrorToast";
+import AddSubjectModal from "./AddSubjectModal";
 
 interface Props {
   classId: number;
@@ -14,6 +15,12 @@ const SubjectsTable = ({ classId }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
   const [showToast, setShowToast] = useState(true);
+  const [currentClass, setCurrentClass] = useState<Subject | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleUpdateClose = () => {
+    setShowModal(false);
+  };
 
   const handleClose = () => {
     setShowDeleteModal(false);
@@ -61,7 +68,13 @@ const SubjectsTable = ({ classId }: Props) => {
                   <FaRegEye size={23} />
                 </button>
                 <button className="btn btn-link text-success">
-                  <FaPencil size={19} />
+                  <FaPencil
+                    size={19}
+                    onClick={() => {
+                      setShowModal(true);
+                      setCurrentClass(classI);
+                    }}
+                  />
                 </button>
                 <button
                   className="btn btn-link text-danger"
@@ -81,6 +94,13 @@ const SubjectsTable = ({ classId }: Props) => {
         isShow={showDeleteModal}
         handleClose={handleClose}
         handleDelete={() => handleDelete(currentId)}
+      />
+      <AddSubjectModal
+        classId={classId}
+        isShow={showModal}
+        handleClose={handleUpdateClose}
+        currentClass={currentClass}
+        slug="Update"
       />
     </>
   );

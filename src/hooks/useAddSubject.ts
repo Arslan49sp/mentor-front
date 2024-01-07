@@ -9,12 +9,12 @@ interface addSubjectRes {
   data: Subject;
 }
 
-const useAddSubject = (onAdd: () => void, cacheKey: (string | number)[]) => {
+const useAddSubject = (onAdd: () => void, cacheKey: (string | number)[], url: string, slug: string | undefined, id: number | undefined) => {
   const queryClient = useQueryClient();
   return useMutation<addSubjectRes, Error, Subject>({
     mutationFn: (newSubject) =>
       axios
-        .post<addSubjectRes>(addSubjectUrl, newSubject)
+        .post<addSubjectRes>(url, newSubject)
         .then((res) => res.data),
     onSuccess: (savedSubject) => {
       // queryClient.invalidateQueries(["allClass"]); //first approach
@@ -22,8 +22,13 @@ const useAddSubject = (onAdd: () => void, cacheKey: (string | number)[]) => {
         cacheKey,
         (subjectRes) => {
           const existingSubjects = subjectRes?.data || [];
+          let finalSubjects;
+          slug ?
+           finalSubjects = existingSubjects.filter(
+            (cls) => cls.id !== id
+          ): finalSubjects = existingSubjects
           return {
-            data: [savedSubject.data, ...existingSubjects],
+            data: [savedSubject.data, ...finalSubjects],
             status: subjectRes?.status || "",
             message: subjectRes?.message || "",
           };
