@@ -50,7 +50,7 @@ const AddClassModel = ({ handleClose, isShow, currentClass, slug }: Props) => {
     : (url = addClassUrl);
 
   //mutaion hook
-  const addClass = useAddClass(handleClose, url, slug);
+  const addClass = useAddClass(handleClose, url, slug, currentClass?.id);
 
   return (
     <>
