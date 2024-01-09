@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaPencil, FaRegEye, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaTrash } from "react-icons/fa6";
 import { addClassUrl } from "../data/api";
 import { CACHE_KEY_CLASSES } from "../data/constants";
 import useClasses, { Class, ClassRes } from "../hooks/useClasses";
@@ -43,7 +43,7 @@ const ClassesTable = () => {
           <tr className="d-flex">
             <th className="sr-width text-center">#</th>
             <th className="flex-grow-1">Name</th>
-            <th className="text-center px-5">Actions</th>
+            <th className="text-center px-4">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -52,9 +52,6 @@ const ClassesTable = () => {
               <td className="sr-width text-center">{index + 1}</td>
               <td className="flex-grow-1">{classI.name}</td>
               <td className="d-flex flex-nowrap gap-0">
-                <button className="btn btn-link text-success">
-                  <FaRegEye size={23} />
-                </button>
                 <button
                   className="btn btn-link text-success"
                   onClick={() => {
@@ -62,7 +59,7 @@ const ClassesTable = () => {
                     setCurrentClass(classI);
                   }}
                 >
-                  <FaPencil size={19} />
+                  <FaPencil size={20} />
                 </button>
                 <button
                   className="btn btn-link text-danger"
@@ -71,7 +68,7 @@ const ClassesTable = () => {
                     setCurrentId(classI.id);
                   }}
                 >
-                  <FaTrash size={19} />
+                  <FaTrash size={20} />
                 </button>
               </td>
             </tr>

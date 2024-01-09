@@ -55,7 +55,7 @@ const SubjectsTable = ({ classId }: Props) => {
           <tr className="d-flex">
             <th className="sr-width text-center">#</th>
             <th className="flex-grow-1">Name</th>
-            <th className="text-center px-5">Actions</th>
+            <th className="text-center px-4">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -64,9 +64,6 @@ const SubjectsTable = ({ classId }: Props) => {
               <td className="sr-width text-center">{index + 1}</td>
               <td className="flex-grow-1">{classI.name}</td>
               <td className="d-flex flex-nowrap gap-0">
-                <button className="btn btn-link text-success">
-                  <FaRegEye size={23} />
-                </button>
                 <button
                   className="btn btn-link text-success"
                   onClick={() => {
@@ -74,7 +71,7 @@ const SubjectsTable = ({ classId }: Props) => {
                     setCurrentSubject(classI);
                   }}
                 >
-                  <FaPencil size={19} />
+                  <FaPencil size={20} />
                 </button>
                 <button
                   className="btn btn-link text-danger"
@@ -83,7 +80,7 @@ const SubjectsTable = ({ classId }: Props) => {
                     setCurrentId(classI.id);
                   }}
                 >
-                  <FaTrash size={19} />
+                  <FaTrash size={20} />
                 </button>
               </td>
             </tr>
