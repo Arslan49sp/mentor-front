@@ -6,6 +6,7 @@ import { baseUrl } from "../data/api";
 import ErrorToast from "./ErrorToast";
 import DeleteModal from "./DeleteModal";
 import AddQuestionModal, { PreData } from "./AddQuestionModal";
+import QuestionDetailsModal from "./QuestionDetailsModal";
 
 interface Props {
   preData: PreData;
@@ -17,8 +18,9 @@ const ShortTable = ({ shorts, type, subjId, preData }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
   const [showToast, setShowToast] = useState(true);
-  const [currentChapter, setCurrentChapter] = useState<Question | null>(null);
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const handleUpdateClose = () => {
     setShowModal(false);
@@ -67,14 +69,20 @@ const ShortTable = ({ shorts, type, subjId, preData }: Props) => {
                 {question.correct_answer}
               </td>
               <td className="d-flex flex-nowrap gap-0">
-                <button className="btn btn-link text-success">
+                <button
+                  className="btn btn-link text-success"
+                  onClick={() => {
+                    setCurrentQuestion(question);
+                    setShowDetailsModal(true);
+                  }}
+                >
                   <FaRegEye size={23} />
                 </button>
                 <button
                   className="btn btn-link text-success"
                   onClick={() => {
                     setShowModal(true);
-                    setCurrentChapter(question);
+                    setCurrentQuestion(question);
                   }}
                 >
                   <FaPencil size={19} />
@@ -103,8 +111,14 @@ const ShortTable = ({ shorts, type, subjId, preData }: Props) => {
         preData={preData}
         isShow={showModal}
         handleClose={handleUpdateClose}
-        currentChapter={currentChapter}
+        currentChapter={currentQuestion}
         slug="Update"
+      />
+
+      <QuestionDetailsModal
+        isShow={showDetailsModal}
+        handleClose={() => setShowDetailsModal(false)}
+        question={currentQuestion}
       />
     </>
   );
