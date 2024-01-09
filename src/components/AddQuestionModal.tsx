@@ -53,7 +53,8 @@ const AddQuestionModal = ({
   useEffect(() => {
     if (currentChapter) {
       Object.entries(currentChapter).forEach(([key, value]) => {
-        setValue(key, value);
+        console.log(key, value);
+        value && setValue(key as "stem", value);
       });
     }
   }, [currentChapter, setValue]);
@@ -63,7 +64,7 @@ const AddQuestionModal = ({
     handleClose();
   };
 
-  let url;
+  let url: string;
   currentChapter
     ? (url = addQuestionUrl + "/" + currentChapter.id)
     : (url = addQuestionUrl);
@@ -97,7 +98,6 @@ const AddQuestionModal = ({
                 chapter_id: preData.chapterId,
                 ...data,
               };
-              console.log(chapterData);
               addQuestion.mutate(chapterData);
             })}
           >

@@ -78,7 +78,7 @@ const AddMcqsModal = ({
   useEffect(() => {
     if (currentChapter) {
       Object.entries(currentChapter).forEach(([key, value]) => {
-        setValue(key, value);
+        value && setValue(key as "stem", value);
       });
     }
   }, [currentChapter, setValue]);
