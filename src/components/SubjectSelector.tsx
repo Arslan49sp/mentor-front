@@ -2,9 +2,14 @@ import React from "react";
 import useSubjects from "../hooks/useSubjects";
 interface Props {
   classId: number;
+  selectedSubjectId: number;
   setSelectedSubjId: (subjId: number) => void;
 }
-const SubjectSelector = ({ classId, setSelectedSubjId }: Props) => {
+const SubjectSelector = ({
+  classId,
+  selectedSubjectId,
+  setSelectedSubjId,
+}: Props) => {
   const { data } = useSubjects(classId);
   const handleSubjChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedSubjId = parseInt(event.target.value, 10);
@@ -19,7 +24,11 @@ const SubjectSelector = ({ classId, setSelectedSubjId }: Props) => {
       >
         <option>--</option>
         {data?.data.map((item) => (
-          <option key={item.id} value={item.id}>
+          <option
+            selected={selectedSubjectId === item.id}
+            key={item.id}
+            value={item.id}
+          >
             {item.name}
           </option>
         ))}

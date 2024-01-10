@@ -2,9 +2,14 @@ import useChapters from "../hooks/useChapters";
 
 interface Props {
   subjId: number;
+  selectedChapterId: number;
   setSelectedChapterId: (chapterId: number) => void;
 }
-const ChaptorsSelector = ({ subjId, setSelectedChapterId }: Props) => {
+const ChaptorsSelector = ({
+  selectedChapterId,
+  subjId,
+  setSelectedChapterId,
+}: Props) => {
   const { data } = useChapters(subjId);
   const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedChapterId = parseInt(event.target.value, 10);
@@ -19,7 +24,11 @@ const ChaptorsSelector = ({ subjId, setSelectedChapterId }: Props) => {
       >
         <option>--</option>
         {data?.data.map((item) => (
-          <option key={item.id} value={item.id}>
+          <option
+            selected={selectedChapterId === item.id}
+            key={item.id}
+            value={item.id}
+          >
             {item.name}
           </option>
         ))}

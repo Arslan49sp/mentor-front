@@ -9,25 +9,30 @@ import AddMcqsModal from "../components/AddMcqsModal";
 
 const Questions = memo(() => {
   const [selectedClassId, setSelectedClassId] = useState<number>(
-    parseInt(sessionStorage.getItem("selectedClassId") || "") || 0
+    parseInt(sessionStorage.getItem("questionClass") || "") || 0
   );
   const [selectedSubjectId, setSelectedSubjectId] = useState<number>(
-    parseInt(sessionStorage.getItem("selectedSubjectId") || "") || 0
+    parseInt(sessionStorage.getItem("questionSubject") || "") || 0
   );
   const [selectedChapterId, setSelectedChapterId] = useState<number>(
-    parseInt(sessionStorage.getItem("selectedChapterId") || "") || 0
+    parseInt(sessionStorage.getItem("questionChapter") || "") || 0
   );
   const [selectedQuestionType, setSelectedQuestionType] =
     useState<string>("multiple_choice");
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    sessionStorage.setItem("selectedClassId", selectedClassId.toString());
+    sessionStorage.setItem("questionClass", selectedClassId.toString());
   }, [selectedClassId]);
 
   useEffect(() => {
-    sessionStorage.setItem("selectedSubjectId", selectedSubjectId.toString());
+    sessionStorage.setItem("questionSubject", selectedSubjectId.toString());
   }, [selectedSubjectId]);
+
+  useEffect(() => {
+    sessionStorage.setItem("questionChapter", selectedChapterId.toString());
+  }, [selectedChapterId]);
+
   useEffect(() => {
     const handleBeforeUnload = () => {
       sessionStorage.clear();
@@ -54,6 +59,7 @@ const Questions = memo(() => {
       <hr />
       <div className="d-flex gap-2 mb-2">
         <ClassSelector
+          selectedClassId={selectedClassId}
           setSelectedClassId={(classId) => {
             setSelectedClassId(classId);
             setSelectedSubjectId(0);
@@ -62,6 +68,7 @@ const Questions = memo(() => {
         />
         {selectedClassId !== 0 && (
           <SubjectSelector
+            selectedSubjectId={selectedSubjectId}
             classId={selectedClassId}
             setSelectedSubjId={(subjId) => {
               setSelectedSubjectId(subjId);
@@ -71,6 +78,7 @@ const Questions = memo(() => {
         )}
         {selectedSubjectId !== 0 && (
           <ChaptorsSelector
+            selectedChapterId={selectedChapterId}
             subjId={selectedSubjectId}
             setSelectedChapterId={(chapterId) =>
               setSelectedChapterId(chapterId)

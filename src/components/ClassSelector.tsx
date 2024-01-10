@@ -1,9 +1,10 @@
 import useClasses from "../hooks/useClasses";
 
 interface Props {
+  selectedClassId: number;
   setSelectedClassId: (classId: number) => void;
 }
-const ClassSelector = ({ setSelectedClassId }: Props) => {
+const ClassSelector = ({ selectedClassId, setSelectedClassId }: Props) => {
   const { data } = useClasses();
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedClassId = parseInt(event.target.value, 10);
@@ -18,7 +19,11 @@ const ClassSelector = ({ setSelectedClassId }: Props) => {
       >
         <option>--</option>
         {data?.data.map((item) => (
-          <option key={item.id} value={item.id}>
+          <option
+            selected={selectedClassId === item.id}
+            key={item.id}
+            value={item.id}
+          >
             {item.name}
           </option>
         ))}
