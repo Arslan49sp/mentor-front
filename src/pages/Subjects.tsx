@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClassSelector from "../components/ClassSelector";
 import SubjectsTable from "../components/SubjectsTable";
 import AddSubjectModal from "../components/AddSubjectModal";
 
 const Subjects = () => {
-  const [selectedClassId, setSelectedClassId] = useState<number>();
+  const [selectedClassId, setSelectedClassId] = useState<number>(
+    parseInt(sessionStorage.getItem("subjectClass") || "") || 0
+  );
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem("subjectClass", selectedClassId.toString());
+  }, [selectedClassId]);
 
   const handleClose = () => {
     setShowModal(false);
@@ -20,11 +26,12 @@ const Subjects = () => {
       <hr />
       <div className="mb-2">
         <ClassSelector
+          selectedClassId={selectedClassId}
           setSelectedClassId={(classId) => setSelectedClassId(classId)}
         />
       </div>
 
-      {selectedClassId && (
+      {selectedClassId !== 0 && (
         <>
           <button className="btn btn-success mb-2" onClick={handleShow}>
             Add New
