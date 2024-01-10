@@ -6,6 +6,7 @@ interface Props {
 }
 const ClassSelector = ({ selectedClassId, setSelectedClassId }: Props) => {
   const { data } = useClasses();
+  const foundClass = data?.data.find((c) => c.id === selectedClassId);
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedClassId = parseInt(event.target.value, 10);
     setSelectedClassId(selectedClassId);
@@ -16,14 +17,11 @@ const ClassSelector = ({ selectedClassId, setSelectedClassId }: Props) => {
         onChange={handleClassChange}
         id="classSelector"
         className="form-select"
+        value={foundClass?.name || ""}
       >
         <option>--</option>
         {data?.data.map((item) => (
-          <option
-            selected={selectedClassId === item.id}
-            key={item.id}
-            value={item.id}
-          >
+          <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}

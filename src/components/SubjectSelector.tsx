@@ -11,6 +11,7 @@ const SubjectSelector = ({
   setSelectedSubjId,
 }: Props) => {
   const { data } = useSubjects(classId);
+  const foundSubject = data?.data.find((c) => c.id === selectedSubjectId);
   const handleSubjChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedSubjId = parseInt(event.target.value, 10);
     setSelectedSubjId(selectedSubjId);
@@ -21,14 +22,11 @@ const SubjectSelector = ({
         onChange={handleSubjChange}
         id="subjSelector"
         className="form-select"
+        value={foundSubject?.name || ""}
       >
         <option>--</option>
         {data?.data.map((item) => (
-          <option
-            selected={selectedSubjectId === item.id}
-            key={item.id}
-            value={item.id}
-          >
+          <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}

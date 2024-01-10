@@ -13,6 +13,19 @@ const Subjects = () => {
     sessionStorage.setItem("subjectClass", selectedClassId.toString());
   }, [selectedClassId]);
 
+  // use to clear the session storage when a user refresh the page.
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.clear();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   const handleClose = () => {
     setShowModal(false);
   };

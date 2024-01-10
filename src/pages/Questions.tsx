@@ -33,6 +33,7 @@ const Questions = memo(() => {
     sessionStorage.setItem("questionChapter", selectedChapterId.toString());
   }, [selectedChapterId]);
 
+  // use to clear the session storage when a user refresh the page.
   useEffect(() => {
     const handleBeforeUnload = () => {
       sessionStorage.clear();

@@ -11,6 +11,7 @@ const ChaptorsSelector = ({
   setSelectedChapterId,
 }: Props) => {
   const { data } = useChapters(subjId);
+  const foundChapter = data?.data.find((c) => c.id === selectedChapterId);
   const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedChapterId = parseInt(event.target.value, 10);
     setSelectedChapterId(selectedChapterId);
@@ -21,14 +22,11 @@ const ChaptorsSelector = ({
         onChange={handleChapterChange}
         id="chaptorSelector"
         className="form-select"
+        value={foundChapter?.name || ""}
       >
         <option>--</option>
         {data?.data.map((item) => (
-          <option
-            selected={selectedChapterId === item.id}
-            key={item.id}
-            value={item.id}
-          >
+          <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}
