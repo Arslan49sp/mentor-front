@@ -18,7 +18,7 @@ const SubjectSelector = ({
 
   useEffect(() => {}, [selectedSubjectId]);
   return (
-    <div className="form-floating col-3">
+    <div className="form-floating col">
       <select
         onChange={handleSubjChange}
         id="subjSelector"
@@ -32,7 +32,9 @@ const SubjectSelector = ({
           </option>
         ))}
       </select>
-      <label id="subjSelector">Choose subject</label>
+      <label id="subjSelector" className="ms-2">
+        Choose subject
+      </label>
     </div>
   );
 };

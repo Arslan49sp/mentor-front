@@ -58,7 +58,7 @@ const Questions = memo(() => {
     <div className="p-5">
       <h1>Questions</h1>
       <hr />
-      <div className="d-flex gap-2 mb-2">
+      <div className="row row-cols-1 row-cols-md-4 gap-md-0 mb-2">
         <ClassSelector
           selectedClassId={selectedClassId}
           setSelectedClassId={(classId) => {

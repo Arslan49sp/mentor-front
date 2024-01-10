@@ -17,7 +17,7 @@ const ClassSelector = ({ selectedClassId, setSelectedClassId }: Props) => {
   useEffect(() => {}, [selectedClassId]);
 
   return (
-    <div className="form-floating col-3">
+    <div className="form-floating col">
       <select
         onChange={handleClassChange}
         id="classSelector"
@@ -31,7 +31,9 @@ const ClassSelector = ({ selectedClassId, setSelectedClassId }: Props) => {
           </option>
         ))}
       </select>
-      <label id="classSelector">Choose class</label>
+      <label id="classSelector" className="ms-2">
+        Choose class
+      </label>
     </div>
   );
 };

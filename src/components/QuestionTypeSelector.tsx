@@ -8,7 +8,7 @@ const QuestionTypeSelector = ({ setSelectedQuestionType }: Props) => {
     setSelectedQuestionType(selectedQuestionType);
   };
   return (
-    <div className="form-floating col-3">
+    <div className="form-floating col">
       <select
         onChange={handleTypeChange}
         id="questionSelector"
@@ -19,7 +19,9 @@ const QuestionTypeSelector = ({ setSelectedQuestionType }: Props) => {
         <option value="short_question">Short</option>
         <option value="long_question">Long</option>
       </select>
-      <label id="questionSelector">Question Type</label>
+      <label id="questionSelector" className="ms-2">
+        Question Type
+      </label>
     </div>
   );
 };

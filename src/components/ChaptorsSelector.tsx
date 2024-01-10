@@ -18,7 +18,7 @@ const ChaptorsSelector = ({
   };
   useEffect(() => {}, [selectedChapterId]);
   return (
-    <div className="form-floating col-3">
+    <div className="form-floating col">
       <select
         onChange={handleChapterChange}
         id="chaptorSelector"
@@ -32,7 +32,9 @@ const ChaptorsSelector = ({
           </option>
         ))}
       </select>
-      <label id="chaptorSelector">Choose Chapter</label>
+      <label id="chaptorSelector" className="ms-2">
+        Choose Chapter
+      </label>
     </div>
   );
 };
