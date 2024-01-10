@@ -1,31 +1,27 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Questions from "./pages/Questions";
+import { memo, useState } from "react";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import Sidebar from "./components/SideBar";
 import Chapters from "./pages/Chapters";
 import Classes from "./pages/Classes";
-import Sidebar from "./components/SideBar";
+import Questions from "./pages/Questions";
 import Subjects from "./pages/Subjects";
-import { useState } from "react";
 
-const queryClient = new QueryClient();
 function App() {
   const [isClose, setIsClose] = useState(false);
-  const Layout = () => {
+
+  const Layout = memo(() => {
     return (
       <div>
         <Sidebar isClose={isClose} setIsClose={() => setIsClose(!isClose)} />
         <div
           className={isClose === false ? "content-area" : "content-area-closed"}
         >
-          <QueryClientProvider client={queryClient}>
-            <Outlet />
-            <ReactQueryDevtools />
-          </QueryClientProvider>
+          <Outlet />
         </div>
       </div>
     );
-  };
+  });
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -50,6 +46,7 @@ function App() {
       ],
     },
   ]);
+
   return <RouterProvider router={router} />;
 }
 

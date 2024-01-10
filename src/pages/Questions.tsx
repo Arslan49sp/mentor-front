@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState, useEffect } from "react";
 import ClassSelector from "../components/ClassSelector";
 import SubjectSelector from "../components/SubjectSelector";
 import ChaptorsSelector from "../components/ChaptorsSelector";
@@ -7,13 +7,38 @@ import QuestionsTable from "../components/QuestionsTable";
 import AddQuestionModal from "../components/AddQuestionModal";
 import AddMcqsModal from "../components/AddMcqsModal";
 
-const Questions = () => {
-  const [selectedClassId, setSelectedClassId] = useState<number>();
-  const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
-  const [selectedChapterId, setSelectedChapterId] = useState<number>();
+const Questions = memo(() => {
+  const [selectedClassId, setSelectedClassId] = useState<number>(
+    parseInt(sessionStorage.getItem("selectedClassId") || "") || 0
+  );
+  const [selectedSubjectId, setSelectedSubjectId] = useState<number>(
+    parseInt(sessionStorage.getItem("selectedSubjectId") || "") || 0
+  );
+  const [selectedChapterId, setSelectedChapterId] = useState<number>(
+    parseInt(sessionStorage.getItem("selectedChapterId") || "") || 0
+  );
   const [selectedQuestionType, setSelectedQuestionType] =
     useState<string>("multiple_choice");
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem("selectedClassId", selectedClassId.toString());
+  }, [selectedClassId]);
+
+  useEffect(() => {
+    sessionStorage.setItem("selectedSubjectId", selectedSubjectId.toString());
+  }, [selectedSubjectId]);
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.clear();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   const handleClose = () => {
     setShowModal(false);
@@ -31,20 +56,20 @@ const Questions = () => {
         <ClassSelector
           setSelectedClassId={(classId) => {
             setSelectedClassId(classId);
-            setSelectedSubjectId(undefined);
-            setSelectedChapterId(undefined);
+            setSelectedSubjectId(0);
+            setSelectedChapterId(0);
           }}
         />
-        {selectedClassId && (
+        {selectedClassId !== 0 && (
           <SubjectSelector
             classId={selectedClassId}
             setSelectedSubjId={(subjId) => {
               setSelectedSubjectId(subjId);
-              setSelectedChapterId(undefined);
+              setSelectedChapterId(0);
             }}
           />
         )}
-        {selectedSubjectId && (
+        {selectedSubjectId !== 0 && (
           <ChaptorsSelector
             subjId={selectedSubjectId}
             setSelectedChapterId={(chapterId) =>
@@ -52,7 +77,7 @@ const Questions = () => {
             }
           />
         )}
-        {selectedChapterId && (
+        {selectedChapterId !== 0 && (
           <QuestionTypeSelector
             setSelectedQuestionType={(questionType) =>
               setSelectedQuestionType(questionType)
@@ -60,7 +85,7 @@ const Questions = () => {
           />
         )}
       </div>
-      {selectedSubjectId && selectedChapterId && (
+      {selectedSubjectId !== 0 && selectedChapterId !== 0 && (
         <>
           <button className="btn btn-success mb-2" onClick={handleShow}>
             Add New
@@ -95,6 +120,6 @@ const Questions = () => {
       )}
     </div>
   );
-};
+});
 
 export default Questions;
