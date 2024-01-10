@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useChapters from "../hooks/useChapters";
 
 interface Props {
@@ -11,18 +12,18 @@ const ChaptorsSelector = ({
   setSelectedChapterId,
 }: Props) => {
   const { data } = useChapters(subjId);
-  const foundChapter = data?.data.find((c) => c.id === selectedChapterId);
   const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedChapterId = parseInt(event.target.value, 10);
     setSelectedChapterId(selectedChapterId);
   };
+  useEffect(() => {}, [selectedChapterId]);
   return (
     <div className="form-floating col-3">
       <select
         onChange={handleChapterChange}
         id="chaptorSelector"
         className="form-select"
-        value={foundChapter?.name || ""}
+        value={selectedChapterId}
       >
         <option>--</option>
         {data?.data.map((item) => (

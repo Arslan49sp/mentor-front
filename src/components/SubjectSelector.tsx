@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useSubjects from "../hooks/useSubjects";
 interface Props {
   classId: number;
@@ -11,18 +11,19 @@ const SubjectSelector = ({
   setSelectedSubjId,
 }: Props) => {
   const { data } = useSubjects(classId);
-  const foundSubject = data?.data.find((c) => c.id === selectedSubjectId);
   const handleSubjChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedSubjId = parseInt(event.target.value, 10);
     setSelectedSubjId(selectedSubjId);
   };
+
+  useEffect(() => {}, [selectedSubjectId]);
   return (
     <div className="form-floating col-3">
       <select
         onChange={handleSubjChange}
         id="subjSelector"
         className="form-select"
-        value={foundSubject?.name || ""}
+        value={selectedSubjectId}
       >
         <option>--</option>
         {data?.data.map((item) => (
