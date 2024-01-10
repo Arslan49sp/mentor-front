@@ -29,12 +29,19 @@ const Questions = () => {
       <hr />
       <div className="d-flex gap-2 mb-2">
         <ClassSelector
-          setSelectedClassId={(classId) => setSelectedClassId(classId)}
+          setSelectedClassId={(classId) => {
+            setSelectedClassId(classId);
+            setSelectedSubjectId(undefined);
+            setSelectedChapterId(undefined);
+          }}
         />
         {selectedClassId && (
           <SubjectSelector
             classId={selectedClassId}
-            setSelectedSubjId={(subjId) => setSelectedSubjectId(subjId)}
+            setSelectedSubjId={(subjId) => {
+              setSelectedSubjectId(subjId);
+              setSelectedChapterId(undefined);
+            }}
           />
         )}
         {selectedSubjectId && (

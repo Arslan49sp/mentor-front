@@ -1,4 +1,4 @@
-import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaTrash } from "react-icons/fa6";
 import useChapters, { Chapter, ChapterRes } from "../hooks/useChapters";
 import { useState } from "react";
 import { baseUrl } from "../data/api";
