@@ -1,5 +1,5 @@
 import { FaPencil, FaTrash } from "react-icons/fa6";
-import useChapters, { Chapter, ChapterRes } from "../hooks/useChapters";
+import useChapters, { Chapter } from "../hooks/useChapters";
 import { useState } from "react";
 import { baseUrl } from "../data/api";
 import useDelete from "../hooks/useDelete";
@@ -26,7 +26,7 @@ const ChaptersTable = ({ subjectId }: Props) => {
     setShowDeleteModal(false);
   };
 
-  const mutation = useDelete<ChapterRes>(handleClose, currentId, [
+  const mutation = useDelete<Chapter>(handleClose, currentId, [
     "subject",
     subjectId,
     "chapters",

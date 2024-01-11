@@ -1,5 +1,5 @@
 import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
-import { Question, QuestionRes } from "../hooks/useQuestions";
+import { Question } from "../hooks/useQuestions";
 import { useState } from "react";
 import useDelete from "../hooks/useDelete";
 import { baseUrl } from "../data/api";
@@ -30,7 +30,7 @@ const ShortTable = ({ shorts, type, subjId, preData }: Props) => {
     setShowDeleteModal(false);
   };
 
-  const mutation = useDelete<QuestionRes>(handleClose, currentId, [
+  const mutation = useDelete<Question>(handleClose, currentId, [
     "subject",
     subjId,
     "questions",

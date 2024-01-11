@@ -2,15 +2,17 @@ import { useState } from "react";
 import { FaPencil, FaTrash } from "react-icons/fa6";
 import { addClassUrl } from "../data/api";
 import { CACHE_KEY_CLASSES } from "../data/constants";
-import useClasses, { Class, ClassRes } from "../hooks/useClasses";
+import useClasses, { Class } from "../hooks/useClasses";
 import DeleteModal from "./DeleteModal";
 import useDelete from "../hooks/useDelete";
 import AddClassModel from "./AddClassModel";
+import ErrorToast from "./ErrorToast";
 
 const ClassesTable = () => {
   const { data, isLoading, error } = useClasses();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
+  const [showToast, setShowToast] = useState(true);
   const [currentClass, setCurrentClass] = useState<Class | null>(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -22,14 +24,10 @@ const ClassesTable = () => {
     setShowDeleteModal(false);
   };
 
-  const mutation = useDelete<ClassRes>(
-    handleClose,
-    currentId,
-    CACHE_KEY_CLASSES
-  );
+  const mutation = useDelete<Class>(handleClose, currentId, CACHE_KEY_CLASSES);
 
   const handleDelete = (id: number) => {
-    console.log("deleted content: " + id);
+    setShowToast(true);
     const url = addClassUrl + "/" + id;
     mutation.mutate(url);
   };
@@ -38,6 +36,13 @@ const ClassesTable = () => {
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>
+      {mutation.error && (
+        <ErrorToast
+          isShow={showToast}
+          handleClose={() => setShowToast(false)}
+          message={mutation.error.message}
+        />
+      )}
       <table className="table table-bordered ">
         <thead>
           <tr className="d-flex">

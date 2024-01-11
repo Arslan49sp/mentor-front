@@ -1,5 +1,5 @@
 import { FaPencil, FaTrash } from "react-icons/fa6";
-import useSubjects, { Subject, SubjectRes } from "../hooks/useSubjects";
+import useSubjects, { Subject } from "../hooks/useSubjects";
 import { useState } from "react";
 import useDelete from "../hooks/useDelete";
 import { baseUrl } from "../data/api";
@@ -26,7 +26,7 @@ const SubjectsTable = ({ classId }: Props) => {
     setShowDeleteModal(false);
   };
 
-  const mutation = useDelete<SubjectRes>(handleClose, currentId, [
+  const mutation = useDelete<Subject>(handleClose, currentId, [
     "class",
     classId,
     "subjects",
