@@ -1,4 +1,4 @@
-import { FaRegEye, FaPencil, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaTrash } from "react-icons/fa6";
 import useSubjects, { Subject, SubjectRes } from "../hooks/useSubjects";
 import { useState } from "react";
 import useDelete from "../hooks/useDelete";

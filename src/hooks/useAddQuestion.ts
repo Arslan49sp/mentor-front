@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { addQuestionUrl } from "../data/api";
 import { Question, QuestionRes } from "./useQuestions";
 import { QuestionFormData } from "../components/AddQuestionModal";
 
@@ -15,13 +14,17 @@ interface NewQuestion extends QuestionFormData {
   chapter_id: number;
 }
 
-const useAddQuestion = (onAdd: () => void, cacheKey: (string | number)[], url: string, slug: string | undefined, id: number | undefined) => {
+const useAddQuestion = (
+  onAdd: () => void,
+  cacheKey: (string | number)[],
+  url: string,
+  slug: string | undefined,
+  id: number | undefined
+) => {
   const queryClient = useQueryClient();
   return useMutation<addQuestionRes, Error, NewQuestion>({
     mutationFn: (newQuestion) =>
-      axios
-        .post<addQuestionRes>(url, newQuestion)
-        .then((res) => res.data),
+      axios.post<addQuestionRes>(url, newQuestion).then((res) => res.data),
     onSuccess: (savedQuestion) => {
       // queryClient.invalidateQueries(["allClass"]); //first approach
       queryClient.setQueryData<QuestionRes | undefined>(
@@ -29,10 +32,9 @@ const useAddQuestion = (onAdd: () => void, cacheKey: (string | number)[], url: s
         (questionRes) => {
           const existingChapters = questionRes?.data || [];
           let finalChapters;
-          slug ?
-           finalChapters = existingChapters.filter(
-            (cls) => cls.id !== id
-          ): finalChapters = existingChapters
+          slug
+            ? (finalChapters = existingChapters.filter((cls) => cls.id !== id))
+            : (finalChapters = existingChapters);
           return {
             data: [savedQuestion.data, ...finalChapters],
             status: questionRes?.status || "",
